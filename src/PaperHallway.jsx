@@ -211,7 +211,7 @@ function Hero() {
       </svg>
 
       {/* Main content */}
-      <div className="relative z-10 text-center max-w-3xl mx-auto w-full">
+      <div className="relative z-10 text-center max-w-3xl">
         <div
           className="overflow-hidden mb-6"
           style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s ease 0.3s" }}
@@ -284,6 +284,38 @@ function Hero() {
         >
           Indie games, learning tools, and organization apps — all under one roof.
         </p>
+
+        {/* Request Access CTA */}
+        <div
+          className="mt-10"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(20px)",
+            transition: "all 1s ease 1.4s",
+          }}
+        >
+          <button
+            onClick={() => document.getElementById("request-access").scrollIntoView({ behavior: "smooth" })}
+            className="group inline-flex items-center gap-4 px-8 py-4 transition-all duration-500"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "11px",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              background: "var(--ink)",
+              color: "var(--paper)",
+              border: "none",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            Request Early Access
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M6 1 L6 10 M3 7 L6 10 L9 7" stroke="var(--paper)" strokeWidth="0.9" fill="none" />
+            </svg>
+          </button>
+        </div>
 
         {/* Scroll indicator */}
         <div
@@ -556,23 +588,23 @@ function Footer() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email.trim() || sending) return;
+    if (!email.trim()) return;
     setSending(true);
     setError("");
     try {
-      const resp = await fetch("/api/early-access", {
+      const res = await fetch("/api/early-access", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim() }),
       });
-      if (resp.ok) {
+      const data = await res.json();
+      if (res.ok && data.success) {
         setSubmitted(true);
       } else {
-        const data = await resp.json().catch(() => ({}));
         setError(data.error || "Something went wrong. Please try again.");
       }
-    } catch (err) {
-      setError("Unable to connect. Please try again.");
+    } catch {
+      setError("Something went wrong. Please try again.");
     } finally {
       setSending(false);
     }
@@ -598,6 +630,7 @@ function Footer() {
         </svg>
 
         <p
+          id="request-access"
           className="text-xs uppercase tracking-widest mb-4"
           style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
         >
@@ -662,11 +695,11 @@ function Footer() {
                 onMouseEnter={(e) => { if (!sending) e.target.style.opacity = "0.85"; }}
                 onMouseLeave={(e) => { if (!sending) e.target.style.opacity = "1"; }}
               >
-                {sending ? "Sending\u2026" : "Request Access"}
+                {sending ? "Sending..." : "Request Access"}
               </button>
             </form>
             {error && (
-              <p className="mt-3 text-sm" style={{ fontFamily: "var(--font-body)", color: "#b44" }}>
+              <p className="mt-3 text-xs" style={{ fontFamily: "var(--font-body)", color: "#c0392b" }}>
                 {error}
               </p>
             )}
