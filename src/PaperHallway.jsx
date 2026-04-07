@@ -26,6 +26,9 @@ const DOORS = [
         <circle cx="28" cy="27" r="1.5" />
       </svg>
     ),
+    products: [
+      { id: "dothunter", name: "Dot Hunter", tagline: "Reflex Arcade Game" },
+    ],
   },
   {
     id: "study",
@@ -1275,6 +1278,433 @@ function AetherFeatureCard({ feature, index }) {
 }
 
 /* ====================================================================
+   DOT HUNTER PRODUCT PAGE
+   ==================================================================== */
+
+const DOTHUNTER_FEATURES = [
+  {
+    title: "Lightning Reflexes",
+    description: "Tap glowing dots before they vanish. Every millisecond counts in the hunt for a perfect score.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <circle cx="24" cy="24" r="16" />
+        <circle cx="24" cy="24" r="4" fill="currentColor" />
+        <line x1="24" y1="4" x2="24" y2="10" />
+        <line x1="24" y1="38" x2="24" y2="44" />
+        <line x1="4" y1="24" x2="10" y2="24" />
+        <line x1="38" y1="24" x2="44" y2="24" />
+      </svg>
+    ),
+  },
+  {
+    title: "Progressive Difficulty",
+    description: "Dots spawn faster, shrink smaller, and move unpredictably as you climb through the levels.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <path d="M8 40 L16 28 L24 32 L32 16 L40 8" />
+        <circle cx="16" cy="28" r="2" />
+        <circle cx="24" cy="32" r="2" />
+        <circle cx="32" cy="16" r="2" />
+        <circle cx="40" cy="8" r="2" />
+      </svg>
+    ),
+  },
+  {
+    title: "Achievements & Streaks",
+    description: "Unlock badges, maintain hit streaks, and track your personal bests across sessions.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <path d="M24 4 L28 16 L40 16 L30 24 L34 36 L24 28 L14 36 L18 24 L8 16 L20 16 Z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Multiple Game Modes",
+    description: "Classic, Timed, Zen, and Hardcore modes — each with its own rules and leaderboard.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <rect x="6" y="6" width="16" height="16" rx="2" />
+        <rect x="26" y="6" width="16" height="16" rx="2" />
+        <rect x="6" y="26" width="16" height="16" rx="2" />
+        <rect x="26" y="26" width="16" height="16" rx="2" />
+      </svg>
+    ),
+  },
+  {
+    title: "Minimalist Design",
+    description: "Clean visuals, smooth animations, and zero clutter. Just you and the dots.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <circle cx="24" cy="24" r="20" />
+        <circle cx="24" cy="24" r="2" />
+      </svg>
+    ),
+  },
+  {
+    title: "Play Anywhere",
+    description: "Available on Android via Google Play. Quick sessions that fit into any moment of your day.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <rect x="14" y="4" width="20" height="40" rx="3" />
+        <line x1="14" y1="10" x2="34" y2="10" />
+        <line x1="14" y1="36" x2="34" y2="36" />
+        <circle cx="24" cy="40" r="1.5" />
+      </svg>
+    ),
+  },
+];
+
+function DotHunterPage({ onBack }) {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const t = setTimeout(() => setLoaded(true), 100);
+    return () => clearTimeout(t);
+  }, []);
+
+  const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.paperhallway.dothunter&hl=en";
+  const SITE_URL = "https://dothuntergame.app/";
+
+  return (
+    <div style={{ background: "var(--paper)", minHeight: "100vh" }}>
+      {/* Hero */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6">
+        {/* Dot pattern background */}
+        <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.04 }}>
+          <svg className="w-full h-full" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+            {[120, 200, 340, 450, 560, 680].map((x, i) =>
+              [100, 220, 380, 500, 650, 750].map((y, j) => (
+                <circle key={`${i}-${j}`} cx={x} cy={y} r={((i + j) % 3) + 2} fill="var(--ink)" />
+              ))
+            )}
+          </svg>
+        </div>
+
+        <div className="relative z-10 text-center max-w-3xl">
+          {/* Dot Hunter icon */}
+          <div
+            className="mx-auto mb-8"
+            style={{
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 0.2s",
+            }}
+          >
+            <svg viewBox="0 0 64 64" className="w-16 h-16 mx-auto" fill="none" stroke="var(--ink)" strokeWidth="0.6">
+              <circle cx="32" cy="32" r="28" />
+              <circle cx="32" cy="32" r="18" />
+              <circle cx="32" cy="32" r="8" />
+              <circle cx="32" cy="32" r="3" fill="var(--ink)" />
+            </svg>
+          </div>
+
+          {/* Breadcrumb */}
+          <div
+            className="overflow-hidden mb-6"
+            style={{
+              opacity: loaded ? 1 : 0,
+              transition: "opacity 0.8s ease 0.3s",
+            }}
+          >
+            <p
+              className="text-xs uppercase tracking-widest"
+              style={{
+                fontFamily: "var(--font-body)",
+                color: "var(--ink-faint)",
+                letterSpacing: "0.3em",
+              }}
+            >
+              <a
+                href="#"
+                onClick={(e) => { e.preventDefault(); onBack(); }}
+                className="transition-colors duration-300"
+                style={{ color: "var(--ink-faint)", textDecoration: "none" }}
+                onMouseEnter={(e) => (e.target.style.color = "var(--ink)")}
+                onMouseLeave={(e) => (e.target.style.color = "var(--ink-faint)")}
+              >
+                The Arcade
+              </a>
+              {" "}/ Dot Hunter
+            </p>
+          </div>
+
+          {/* Title */}
+          <div className="overflow-hidden">
+            <h1
+              className="text-6xl sm:text-8xl md:text-9xl leading-none"
+              style={{
+                fontFamily: "var(--font-heading)",
+                color: "var(--ink)",
+                fontWeight: 400,
+                fontStyle: "italic",
+                opacity: loaded ? 1 : 0,
+                transform: loaded ? "translateY(0)" : "translateY(40px)",
+                transition: "all 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s",
+              }}
+            >
+              Dot Hunter
+            </h1>
+          </div>
+
+          {/* Tagline */}
+          <div
+            className="mx-auto mt-8 mb-6"
+            style={{
+              width: loaded ? "80px" : "0px",
+              height: "1px",
+              background: "var(--ink)",
+              opacity: 0.2,
+              transition: "width 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.8s",
+            }}
+          />
+
+          <p
+            className="text-lg sm:text-xl leading-relaxed"
+            style={{
+              fontFamily: "var(--font-heading)",
+              color: "var(--ink)",
+              fontWeight: 400,
+              fontStyle: "italic",
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 0.9s",
+            }}
+          >
+            Hunt the dot. Beat the clock.
+          </p>
+
+          <p
+            className="text-sm sm:text-base leading-relaxed mt-4 max-w-lg mx-auto"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--ink-light)",
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 1s",
+            }}
+          >
+            A minimalist reflex game where precision meets speed. Tap glowing dots before they disappear, climb the ranks, and prove your reflexes.
+          </p>
+
+          {/* CTA Buttons */}
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12"
+            style={{
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 1.1s",
+            }}
+          >
+            <a
+              href={PLAY_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 transition-all duration-500"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "11px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "var(--ink)",
+                color: "var(--paper)",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--paper)">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.303 2.303-8.635-8.635z" />
+              </svg>
+              Test Now
+            </a>
+
+            <a
+              href={SITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 transition-all duration-500"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "11px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "transparent",
+                color: "var(--ink)",
+                border: "1px solid var(--border)",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "var(--ink)";
+                e.currentTarget.style.background = "var(--paper-warm)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)";
+                e.currentTarget.style.background = "transparent";
+              }}
+            >
+              Visit Site
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M1 9 L9 1 M4 1 L9 1 L9 6" stroke="var(--ink)" strokeWidth="0.8" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="px-6 sm:px-10 py-24 sm:py-36">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16 sm:mb-24">
+            <p
+              className="text-xs uppercase tracking-widest mb-4"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+            >
+              Features
+            </p>
+            <h2
+              className="text-3xl sm:text-5xl"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic" }}
+            >
+              Simple. Addictive. Precise.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {DOTHUNTER_FEATURES.map((feature, i) => (
+              <FeatureCard key={i} feature={feature} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="px-6 sm:px-10 py-24 sm:py-36" style={{ background: "var(--paper-warm)" }}>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16 sm:mb-24">
+            <p
+              className="text-xs uppercase tracking-widest mb-4"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+            >
+              How it works
+            </p>
+            <h2
+              className="text-3xl sm:text-5xl"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic" }}
+            >
+              Three steps to the hunt.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
+            {[
+              { step: "01", title: "Download", desc: "Get Dot Hunter free from Google Play. Install in seconds." },
+              { step: "02", title: "Choose Your Mode", desc: "Classic, Timed, Zen, or Hardcore. Pick your challenge." },
+              { step: "03", title: "Hunt", desc: "Tap dots, build streaks, unlock achievements, climb the ranks." },
+            ].map((item) => (
+              <div key={item.step} className="text-center">
+                <span
+                  className="text-6xl sm:text-7xl block mb-4"
+                  style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 300, opacity: 0.1 }}
+                >
+                  {item.step}
+                </span>
+                <h3
+                  className="text-xl mb-3"
+                  style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic" }}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "260px", margin: "0 auto" }}
+                >
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom CTA */}
+      <section className="px-6 sm:px-10 py-24 sm:py-36">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2
+            className="text-4xl sm:text-6xl mb-6"
+            style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic" }}
+          >
+            Ready to hunt?
+          </h2>
+          <p
+            className="text-sm sm:text-base leading-relaxed mb-10"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "400px", margin: "0 auto 40px" }}
+          >
+            Free on Google Play. No ads. No tracking. Just pure reflex gaming.
+          </p>
+          <a
+            href={PLAY_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-10 py-5 transition-all duration-500"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "12px",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              background: "var(--ink)",
+              color: "var(--paper)",
+              textDecoration: "none",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--paper)">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.303 2.303-8.635-8.635z" />
+            </svg>
+            Test Now on Google Play
+          </a>
+
+          {/* Back to hallway */}
+          <div className="mt-16">
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); onBack(); }}
+              className="text-xs uppercase tracking-widest transition-colors duration-300"
+              style={{
+                fontFamily: "var(--font-body)",
+                color: "var(--ink-faint)",
+                letterSpacing: "0.2em",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => (e.target.style.color = "var(--ink)")}
+              onMouseLeave={(e) => (e.target.style.color = "var(--ink-faint)")}
+            >
+              \u2190 Back to the Hallway
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <div
+        className="px-6 sm:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-4"
+        style={{ borderTop: "1px solid var(--border)" }}
+      >
+        <span className="text-xs" style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.1em" }}>
+          &copy; {new Date().getFullYear()} Paper Hallway
+        </span>
+        <span className="text-xs" style={{ fontFamily: "var(--font-heading)", color: "var(--ink-faint)", fontStyle: "italic" }}>
+          paperhallway.com
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ====================================================================
    MAIN APP
    ==================================================================== */
 export default function PaperHallway() {
@@ -1288,6 +1718,9 @@ export default function PaperHallway() {
   const handleProductClick = (productId) => {
     if (productId === "aether") {
       setCurrentView("aether");
+      window.scrollTo(0, 0);
+    } else if (productId === "dothunter") {
+      setCurrentView("dothunter");
       window.scrollTo(0, 0);
     }
   };
@@ -1374,6 +1807,10 @@ export default function PaperHallway() {
 
         {currentView === "aether" && (
           <AetherPage onBack={() => handleNavigate("hallway")} />
+        )}
+
+        {currentView === "dothunter" && (
+          <DotHunterPage onBack={() => handleNavigate("hallway")} />
         )}
       </div>
     </>
