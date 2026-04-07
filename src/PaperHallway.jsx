@@ -1013,34 +1013,42 @@ function AetherPage({ onBack }) {
               transition: "all 1s ease 1.3s",
             }}
           >
-            <a
-              href={DOWNLOAD_URL}
-              className="inline-flex items-center gap-4 px-10 py-4 transition-all duration-500"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "11px",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                background: "var(--ink)",
-                color: "var(--paper)",
-                textDecoration: "none",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-            >
-              Download Aether
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1 L7 10 M4 7.5 L7 10.5 L10 7.5" stroke="var(--paper)" strokeWidth="0.9" />
-                <line x1="3" y1="13" x2="11" y2="13" stroke="var(--paper)" strokeWidth="0.9" />
-              </svg>
-            </a>
-            <span
-              className="text-xs"
-              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.1em" }}
-            >
-              Free &middot; Windows &middot; 45 MB
-            </span>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div
+                className="inline-flex items-center gap-3 px-8 py-3.5"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "11px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  background: "var(--ink)",
+                  color: "var(--paper)",
+                  opacity: 0.5,
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
+                  <path d="M0 3.5L10.1 4.9V14.7H0V3.5ZM11.1 4.7L24 2.9V14.7H11.1V4.7ZM0 15.8H10.1V25.6L0 24.2V15.8ZM11.1 15.8H24V26.8L11.1 25.3V15.8Z" />
+                </svg>
+                Windows — Coming Soon
+              </div>
+              <div
+                className="inline-flex items-center gap-3 px-8 py-3.5"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "11px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  background: "var(--ink)",
+                  color: "var(--paper)",
+                  opacity: 0.5,
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
+                  <path d="M18.7 19.4C17.9 20.4 17 21.5 15.8 21.5C14.6 21.5 14.2 20.8 12.8 20.8C11.4 20.8 10.9 21.5 9.8 21.6C8.6 21.6 7.7 20.4 6.8 19.4C5 17.2 3.6 13.2 5.5 10.5C6.4 9.1 7.9 8.3 9.5 8.2C10.6 8.2 11.7 9 12.4 9C13.1 9 14.5 8.1 15.8 8.2C16.4 8.2 18.1 8.4 19.2 10C19.1 10.1 16.8 11.4 16.8 14.2C16.8 17.4 19.7 18.5 19.7 18.5L18.7 19.4ZM15.1 6.5C15.8 5.6 16.3 4.4 16.1 3.2C15.1 3.3 13.9 3.9 13.1 4.8C12.4 5.6 11.8 6.8 12 7.9C13.1 8 14.3 7.4 15.1 6.5Z" />
+                </svg>
+                macOS — Coming Soon
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1146,39 +1154,44 @@ function AetherPage({ onBack }) {
             className="text-sm sm:text-base mb-10 leading-relaxed"
             style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "400px", margin: "0 auto" }}
           >
-            Download Aether for free. Install Ollama. Let the AI handle the rest.
+            Aether is coming soon for Windows and macOS. Stay tuned.
           </p>
 
-          <a
-            href={DOWNLOAD_URL}
-            className="inline-flex items-center gap-4 px-10 py-4 transition-all duration-500"
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "11px",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              background: "var(--ink)",
-              color: "var(--paper)",
-              textDecoration: "none",
-              cursor: "pointer",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-          >
-            Get Aether — Free
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M7 1 L7 10 M4 7.5 L7 10.5 L10 7.5" stroke="var(--paper)" strokeWidth="0.9" />
-              <line x1="3" y1="13" x2="11" y2="13" stroke="var(--paper)" strokeWidth="0.9" />
-            </svg>
-          </a>
-
-          <div className="mt-6">
-            <span
-              className="text-xs"
-              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.1em" }}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div
+              className="inline-flex items-center gap-3 px-8 py-3.5"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "11px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "var(--ink)",
+                color: "var(--paper)",
+                opacity: 0.5,
+              }}
             >
-              Requires Windows 10+ &middot; Ollama (free) for AI features
-            </span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
+                <path d="M0 3.5L10.1 4.9V14.7H0V3.5ZM11.1 4.7L24 2.9V14.7H11.1V4.7ZM0 15.8H10.1V25.6L0 24.2V15.8ZM11.1 15.8H24V26.8L11.1 25.3V15.8Z" />
+              </svg>
+              Windows — Coming Soon
+            </div>
+            <div
+              className="inline-flex items-center gap-3 px-8 py-3.5"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "11px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "var(--ink)",
+                color: "var(--paper)",
+                opacity: 0.5,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
+                <path d="M18.7 19.4C17.9 20.4 17 21.5 15.8 21.5C14.6 21.5 14.2 20.8 12.8 20.8C11.4 20.8 10.9 21.5 9.8 21.6C8.6 21.6 7.7 20.4 6.8 19.4C5 17.2 3.6 13.2 5.5 10.5C6.4 9.1 7.9 8.3 9.5 8.2C10.6 8.2 11.7 9 12.4 9C13.1 9 14.5 8.1 15.8 8.2C16.4 8.2 18.1 8.4 19.2 10C19.1 10.1 16.8 11.4 16.8 14.2C16.8 17.4 19.7 18.5 19.7 18.5L18.7 19.4ZM15.1 6.5C15.8 5.6 16.3 4.4 16.1 3.2C15.1 3.3 13.9 3.9 13.1 4.8C12.4 5.6 11.8 6.8 12 7.9C13.1 8 14.3 7.4 15.1 6.5Z" />
+              </svg>
+              macOS — Coming Soon
+            </div>
           </div>
 
           {/* Back to hallway */}
