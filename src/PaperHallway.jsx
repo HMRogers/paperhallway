@@ -497,38 +497,22 @@ function DoorCard({ door, index, onProductClick }) {
             </div>
           )}
 
-          {/* Enter link */}
-          <div className="flex items-center gap-3">
-            <span
-              className="text-xs uppercase tracking-widest"
-              style={{
-                fontFamily: "var(--font-body)",
-                color: "var(--ink)",
-                letterSpacing: "0.2em",
-                fontSize: "11px",
-              }}
-            >
-              Enter
-            </span>
-            <div
-              className="transition-all duration-500"
-              style={{
-                width: hovered ? "40px" : "24px",
-                height: "1px",
-                background: "var(--ink)",
-              }}
-            />
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              className="transition-transform duration-500"
-              style={{ transform: hovered ? "translateX(4px)" : "translateX(0)" }}
-            >
-              <path d="M1 6 L10 6 M7 3 L10 6 L7 9" stroke="var(--ink)" strokeWidth="0.8" />
-            </svg>
-          </div>
+          {/* Enter link — only show for Study as "Coming Soon" */}
+          {door.id === "study" && (
+            <div className="flex items-center gap-3">
+              <span
+                className="text-xs uppercase tracking-widest"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  color: "var(--ink-faint)",
+                  letterSpacing: "0.2em",
+                  fontSize: "11px",
+                }}
+              >
+                Coming Soon
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Door "handle" accent */}
