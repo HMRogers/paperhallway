@@ -1006,49 +1006,70 @@ function AetherPage({ onBack }) {
 
           {/* CTA */}
           <div
-            className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="mt-12 flex flex-col items-center gap-6"
             style={{
               opacity: loaded ? 1 : 0,
               transform: loaded ? "translateY(0)" : "translateY(20px)",
               transition: "all 1s ease 1.3s",
             }}
           >
+            {/* Primary: Buy Aether Pro */}
+            <a
+              href="https://buy.stripe.com/00w3coals7ns3i50cB8Vi00"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-10 py-4 transition-all duration-500 hover:shadow-lg"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "12px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "var(--ink)",
+                color: "var(--paper)",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--paper)" strokeWidth="1.5">
+                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+              </svg>
+              Buy Aether Pro
+            </a>
+
+            {/* Secondary: Download Free */}
             <div className="flex flex-col sm:flex-row items-center gap-4">
-              <div
-                className="inline-flex items-center gap-3 px-8 py-3.5"
+              <a
+                href={DOWNLOAD_URL}
+                className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: "11px",
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  background: "var(--ink)",
-                  color: "var(--paper)",
-                  opacity: 0.5,
+                  background: "transparent",
+                  color: "var(--ink)",
+                  border: "1px solid var(--border)",
+                  textDecoration: "none",
+                  cursor: "pointer",
                 }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ink)">
                   <path d="M0 3.5L10.1 4.9V14.7H0V3.5ZM11.1 4.7L24 2.9V14.7H11.1V4.7ZM0 15.8H10.1V25.6L0 24.2V15.8ZM11.1 15.8H24V26.8L11.1 25.3V15.8Z" />
                 </svg>
-                Windows — Coming Soon
-              </div>
-              <div
-                className="inline-flex items-center gap-3 px-8 py-3.5"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "11px",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  background: "var(--ink)",
-                  color: "var(--paper)",
-                  opacity: 0.5,
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
-                  <path d="M18.7 19.4C17.9 20.4 17 21.5 15.8 21.5C14.6 21.5 14.2 20.8 12.8 20.8C11.4 20.8 10.9 21.5 9.8 21.6C8.6 21.6 7.7 20.4 6.8 19.4C5 17.2 3.6 13.2 5.5 10.5C6.4 9.1 7.9 8.3 9.5 8.2C10.6 8.2 11.7 9 12.4 9C13.1 9 14.5 8.1 15.8 8.2C16.4 8.2 18.1 8.4 19.2 10C19.1 10.1 16.8 11.4 16.8 14.2C16.8 17.4 19.7 18.5 19.7 18.5L18.7 19.4ZM15.1 6.5C15.8 5.6 16.3 4.4 16.1 3.2C15.1 3.3 13.9 3.9 13.1 4.8C12.4 5.6 11.8 6.8 12 7.9C13.1 8 14.3 7.4 15.1 6.5Z" />
-                </svg>
-                macOS — Coming Soon
-              </div>
+                Download Free — Windows
+              </a>
             </div>
+
+            <p
+              className="text-xs mt-1"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
+            >
+              Free tier included &middot; Pro unlocks advanced features
+            </p>
           </div>
         </div>
 
@@ -1154,44 +1175,67 @@ function AetherPage({ onBack }) {
             className="text-sm sm:text-base mb-10 leading-relaxed"
             style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "400px", margin: "0 auto" }}
           >
-            Aether is coming soon for Windows and macOS. Stay tuned.
+            Unlock the full power of local AI file intelligence. Pro features include advanced sorting, batch processing, and priority support.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div
-              className="inline-flex items-center gap-3 px-8 py-3.5"
+          <div className="flex flex-col items-center gap-5">
+            {/* Primary: Buy Aether Pro */}
+            <a
+              href="https://buy.stripe.com/00w3coals7ns3i50cB8Vi00"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-10 py-4 transition-all duration-500 hover:shadow-lg"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "12px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "var(--ink)",
+                color: "var(--paper)",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--paper)" strokeWidth="1.5">
+                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+              </svg>
+              Buy Aether Pro
+            </a>
+
+            {/* Secondary: Download Free */}
+            <a
+              href={DOWNLOAD_URL}
+              className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: "11px",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                background: "var(--ink)",
-                color: "var(--paper)",
-                opacity: 0.5,
+                background: "transparent",
+                color: "var(--ink)",
+                border: "1px solid var(--border)",
+                textDecoration: "none",
+                cursor: "pointer",
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
-                <path d="M0 3.5L10.1 4.9V14.7H0V3.5ZM11.1 4.7L24 2.9V14.7H11.1V4.7ZM0 15.8H10.1V25.6L0 24.2V15.8ZM11.1 15.8H24V26.8L11.1 25.3V15.8Z" />
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-              Windows — Coming Soon
-            </div>
-            <div
-              className="inline-flex items-center gap-3 px-8 py-3.5"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "11px",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                background: "var(--ink)",
-                color: "var(--paper)",
-                opacity: 0.5,
-              }}
+              Download Free — Windows
+            </a>
+
+            <p
+              className="text-xs"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
-                <path d="M18.7 19.4C17.9 20.4 17 21.5 15.8 21.5C14.6 21.5 14.2 20.8 12.8 20.8C11.4 20.8 10.9 21.5 9.8 21.6C8.6 21.6 7.7 20.4 6.8 19.4C5 17.2 3.6 13.2 5.5 10.5C6.4 9.1 7.9 8.3 9.5 8.2C10.6 8.2 11.7 9 12.4 9C13.1 9 14.5 8.1 15.8 8.2C16.4 8.2 18.1 8.4 19.2 10C19.1 10.1 16.8 11.4 16.8 14.2C16.8 17.4 19.7 18.5 19.7 18.5L18.7 19.4ZM15.1 6.5C15.8 5.6 16.3 4.4 16.1 3.2C15.1 3.3 13.9 3.9 13.1 4.8C12.4 5.6 11.8 6.8 12 7.9C13.1 8 14.3 7.4 15.1 6.5Z" />
-              </svg>
-              macOS — Coming Soon
-            </div>
+              Free tier included &middot; Pro unlocks advanced features
+            </p>
           </div>
 
           {/* Back to hallway */}
