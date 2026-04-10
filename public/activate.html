@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activating Aether Pro — Paper Hallway</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f5f0e8;
+      color: #2c2416;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Subtle warm texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(180, 150, 80, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(139, 105, 20, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      max-width: 480px;
+      width: 90%;
+      padding: 56px 44px;
+      border-radius: 24px;
+      background: #fffdf8;
+      border: 1px solid rgba(180, 150, 80, 0.2);
+      text-align: center;
+      box-shadow:
+        0 1px 3px rgba(44, 36, 22, 0.04),
+        0 8px 32px rgba(44, 36, 22, 0.06),
+        0 24px 64px rgba(44, 36, 22, 0.04);
+    }
+
+    /* Gold accent line at top */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      border-radius: 0 0 3px 3px;
+      background: linear-gradient(90deg, #b49650, #d4b86a, #b49650);
+    }
+
+    .logo-mark {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 28px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #2c2416 0%, #3d3225 100%);
+      border: 1px solid rgba(180, 150, 80, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 2px 8px rgba(44, 36, 22, 0.12),
+        0 0 0 1px rgba(180, 150, 80, 0.1);
+    }
+
+    .logo-mark span {
+      font-size: 24px;
+      color: #d4b86a;
+      filter: drop-shadow(0 0 6px rgba(180, 150, 80, 0.4));
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #2c2416;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #7a6e5a;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .subtitle strong {
+      color: #2c2416;
+      font-weight: 600;
+    }
+
+    /* ── Spinner ────────────────────────────────────────────────── */
+    .spinner-area {
+      margin-bottom: 32px;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto;
+      border: 2.5px solid rgba(180, 150, 80, 0.15);
+      border-top-color: #b49650;
+      border-radius: 50%;
+      animation: spin 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .status {
+      font-size: 13px;
+      color: #9a8e78;
+      margin-top: 14px;
+      transition: all 0.4s ease;
+      min-height: 20px;
+    }
+
+    .status.success {
+      color: #5a8a4a;
+      font-weight: 500;
+    }
+
+    .status.waiting {
+      color: #b49650;
+    }
+
+    /* ── Checkmark ──────────────────────────────────────────────── */
+    .checkmark {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .checkmark.show {
+      display: block;
+      animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .checkmark svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.6); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── Return Button ──────────────────────────────────────────── */
+    .fallback-section {
+      display: none;
+      animation: fadeUp 0.5s ease;
+    }
+
+    .fallback-section.show {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-return {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      border-radius: 14px;
+      border: 1px solid rgba(180, 150, 80, 0.35);
+      background: linear-gradient(135deg, #2c2416 0%, #3d3225 100%);
+      color: #f5f0e8;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow:
+        0 2px 12px rgba(44, 36, 22, 0.15),
+        0 0 0 1px rgba(180, 150, 80, 0.1);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-return:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 4px 20px rgba(44, 36, 22, 0.2),
+        0 0 0 1px rgba(180, 150, 80, 0.2);
+      background: linear-gradient(135deg, #3d3225 0%, #4a3f30 100%);
+    }
+
+    .btn-return:active {
+      transform: translateY(0);
+    }
+
+    .btn-return .arrow {
+      font-size: 18px;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-return:hover .arrow {
+      transform: translateX(-3px);
+    }
+
+    /* ── Divider ─────────────────────────────────────────────────── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+      color: #c4b896;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(180, 150, 80, 0.2), transparent);
+    }
+
+    /* ── Help text ───────────────────────────────────────────────── */
+    .help-text {
+      font-size: 12px;
+      color: #a89b84;
+      line-height: 1.7;
+    }
+
+    .help-text a {
+      color: #8b6914;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(139, 105, 20, 0.2);
+      transition: border-color 0.2s ease;
+    }
+
+    .help-text a:hover {
+      border-color: #8b6914;
+    }
+
+    /* ── Error state ─────────────────────────────────────────────── */
+    .error-msg {
+      display: none;
+      padding: 14px 20px;
+      border-radius: 10px;
+      background: rgba(180, 80, 60, 0.06);
+      border: 1px solid rgba(180, 80, 60, 0.12);
+      color: #8a4a3a;
+      font-size: 13px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .error-msg.show {
+      display: block;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    .footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: #c4b896;
+      letter-spacing: 0.04em;
+    }
+
+    .footer a {
+      color: #a89b84;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #8b6914;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Gold diamond logo mark -->
+    <div class="logo-mark">
+      <span>✦</span>
+    </div>
+
+    <h1>Welcome to Aether Pro</h1>
+    <p class="subtitle">
+      Your purchase was successful.<br>
+      Returning you to <strong>Aether</strong> to activate your license...
+    </p>
+
+    <!-- Spinner (shown during redirect) -->
+    <div class="spinner-area" id="spinnerArea">
+      <div class="spinner" id="spinner"></div>
+      <div class="checkmark" id="checkmark">
+        <svg viewBox="0 0 36 36" fill="none">
+          <circle cx="18" cy="18" r="17" stroke="#5a8a4a" stroke-width="2" opacity="0.2"/>
+          <path d="M10 18l5.5 5.5L26 12" stroke="#5a8a4a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="status" id="status">Redirecting to Aether...</p>
+    </div>
+
+    <!-- Error message (hidden by default) -->
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- Fallback section (shown after timeout) -->
+    <div class="fallback-section" id="fallbackSection">
+      <a class="btn-return" id="returnBtn" href="#">
+        <span class="arrow">←</span>
+        Return to Aether to Activate Pro
+      </a>
+
+      <div class="divider">or</div>
+
+      <p class="help-text">
+        If the button doesn't work, open <strong>Aether</strong> manually from your desktop.<br>
+        Your Pro license will activate automatically on next launch.<br><br>
+        Need help? <a href="mailto:support@paperhallway.com">Contact Paper Hallway Support</a>
+      </p>
+    </div>
+  </div>
+
+  <p class="footer">
+    <a href="https://paperhallway.com">Paper Hallway</a> · Aether — AI File Intelligence
+  </p>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var sessionId = params.get('session_id') || '';
+
+      var spinner     = document.getElementById('spinner');
+      var checkmark   = document.getElementById('checkmark');
+      var status      = document.getElementById('status');
+      var fallback    = document.getElementById('fallbackSection');
+      var errorMsg    = document.getElementById('errorMsg');
+      var returnBtn   = document.getElementById('returnBtn');
+
+      // ── No session_id? Show error ──────────────────────────────
+      if (!sessionId) {
+        spinner.style.display = 'none';
+        status.textContent = '';
+        errorMsg.textContent = 'No session ID found. If you just completed a purchase, please check your email for a confirmation link, or contact support.';
+        errorMsg.classList.add('show');
+        fallback.classList.add('show');
+        returnBtn.href = 'aether://activate';
+        return;
+      }
+
+      // ── Build the deep link ────────────────────────────────────
+      var deepLink = 'aether://activate?session_id=' + encodeURIComponent(sessionId);
+      returnBtn.href = deepLink;
+
+      // ── The Auto-Flick: try window.location.replace ────────────
+      // This is the most reliable method for custom protocol handlers.
+      // Using replace() instead of assign() so the bridge page doesn't
+      // stay in browser history.
+      try {
+        window.location.replace(deepLink);
+      } catch (e) {
+        console.warn('[Bridge] Direct redirect blocked:', e);
+      }
+
+      // ── After 1.5s: show optimistic success ────────────────────
+      setTimeout(function () {
+        spinner.style.display = 'none';
+        checkmark.classList.add('show');
+        status.textContent = 'Redirect sent to Aether';
+        status.classList.add('success');
+      }, 1500);
+
+      // ── After 4s: show the Safety Net button ───────────────────
+      // Some browsers block custom protocol redirects silently.
+      // The button gives the user a manual path.
+      setTimeout(function () {
+        status.textContent = 'Didn\'t redirect automatically? Use the button below.';
+        status.classList.remove('success');
+        status.classList.add('waiting');
+        fallback.classList.add('show');
+      }, 4000);
+    })();
+  </script>
+</body>
+</html>
