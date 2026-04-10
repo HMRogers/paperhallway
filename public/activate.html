@@ -19,10 +19,10 @@
       background: #f5f0e8;
       color: #2c2416;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      overflow: hidden;
+      overflow-x: hidden;
+      padding: 24px;
     }
 
-    /* Subtle warm texture overlay */
     body::before {
       content: '';
       position: fixed;
@@ -35,8 +35,8 @@
 
     .card {
       position: relative;
-      max-width: 480px;
-      width: 90%;
+      max-width: 520px;
+      width: 100%;
       padding: 56px 44px;
       border-radius: 24px;
       background: #fffdf8;
@@ -48,7 +48,6 @@
         0 24px 64px rgba(44, 36, 22, 0.04);
     }
 
-    /* Gold accent line at top */
     .card::before {
       content: '';
       position: absolute;
@@ -71,16 +70,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow:
-        0 2px 8px rgba(44, 36, 22, 0.12),
-        0 0 0 1px rgba(180, 150, 80, 0.1);
+      box-shadow: 0 2px 8px rgba(44, 36, 22, 0.12), 0 0 0 1px rgba(180, 150, 80, 0.1);
     }
 
-    .logo-mark span {
-      font-size: 24px;
-      color: #d4b86a;
-      filter: drop-shadow(0 0 6px rgba(180, 150, 80, 0.4));
-    }
+    .logo-mark span { font-size: 24px; color: #d4b86a; filter: drop-shadow(0 0 6px rgba(180, 150, 80, 0.4)); }
 
     h1 {
       font-family: 'Playfair Display', Georgia, serif;
@@ -95,88 +88,109 @@
     .subtitle {
       font-size: 15px;
       color: #7a6e5a;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
       line-height: 1.6;
     }
 
-    .subtitle strong {
-      color: #2c2416;
-      font-weight: 600;
-    }
+    .subtitle strong { color: #2c2416; font-weight: 600; }
 
-    /* ── Spinner ────────────────────────────────────────────────── */
-    .spinner-area {
-      margin-bottom: 32px;
-    }
+    /* ── Spinner ─────────────────────────────────────────────── */
+    .spinner-area { margin-bottom: 28px; }
 
     .spinner {
-      width: 36px;
-      height: 36px;
-      margin: 0 auto;
+      width: 36px; height: 36px; margin: 0 auto;
       border: 2.5px solid rgba(180, 150, 80, 0.15);
       border-top-color: #b49650;
       border-radius: 50%;
       animation: spin 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .status {
-      font-size: 13px;
-      color: #9a8e78;
-      margin-top: 14px;
-      transition: all 0.4s ease;
-      min-height: 20px;
+      font-size: 13px; color: #9a8e78; margin-top: 14px;
+      transition: all 0.4s ease; min-height: 20px;
     }
 
-    .status.success {
-      color: #5a8a4a;
-      font-weight: 500;
-    }
+    .status.success { color: #5a8a4a; font-weight: 500; }
+    .status.waiting { color: #b49650; }
 
-    .status.waiting {
-      color: #b49650;
-    }
+    .checkmark { width: 36px; height: 36px; margin: 0 auto; display: none; }
+    .checkmark.show { display: block; animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .checkmark svg { width: 36px; height: 36px; }
 
-    /* ── Checkmark ──────────────────────────────────────────────── */
-    .checkmark {
-      width: 36px;
-      height: 36px;
-      margin: 0 auto;
+    @keyframes popIn { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+
+    /* ── License Key Display ─────────────────────────────────── */
+    .key-section {
       display: none;
-    }
-
-    .checkmark.show {
-      display: block;
-      animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .checkmark svg {
-      width: 36px;
-      height: 36px;
-    }
-
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.6); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    /* ── Return Button ──────────────────────────────────────────── */
-    .fallback-section {
-      display: none;
+      margin: 24px 0;
       animation: fadeUp 0.5s ease;
     }
 
-    .fallback-section.show {
-      display: block;
+    .key-section.show { display: block; }
+
+    .key-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #d4a843;
+      margin-bottom: 8px;
+      font-weight: 600;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    .key-box {
+      background: #2c2416;
+      border-radius: 12px;
+      padding: 20px 16px;
+      border: 1px solid rgba(212, 168, 67, 0.2);
+      position: relative;
     }
+
+    .key-value {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 10.5px;
+      line-height: 1.6;
+      color: #f5f0e8;
+      word-break: break-all;
+      user-select: all;
+      text-align: left;
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(180, 150, 80, 0.3);
+      background: rgba(180, 150, 80, 0.08);
+      color: #b49650;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .copy-btn:hover {
+      background: rgba(180, 150, 80, 0.15);
+      border-color: rgba(180, 150, 80, 0.5);
+    }
+
+    .copy-btn.copied {
+      color: #5a8a4a;
+      border-color: rgba(90, 138, 74, 0.3);
+      background: rgba(90, 138, 74, 0.08);
+    }
+
+    /* ── Fallback Section ────────────────────────────────────── */
+    .fallback-section { display: none; animation: fadeUp 0.5s ease; }
+    .fallback-section.show { display: block; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
     .btn-return {
       display: inline-flex;
@@ -193,116 +207,67 @@
       cursor: pointer;
       text-decoration: none;
       transition: all 0.25s ease;
-      box-shadow:
-        0 2px 12px rgba(44, 36, 22, 0.15),
-        0 0 0 1px rgba(180, 150, 80, 0.1);
+      box-shadow: 0 2px 12px rgba(44, 36, 22, 0.15), 0 0 0 1px rgba(180, 150, 80, 0.1);
       letter-spacing: 0.01em;
     }
 
     .btn-return:hover {
       transform: translateY(-2px);
-      box-shadow:
-        0 4px 20px rgba(44, 36, 22, 0.2),
-        0 0 0 1px rgba(180, 150, 80, 0.2);
+      box-shadow: 0 4px 20px rgba(44, 36, 22, 0.2), 0 0 0 1px rgba(180, 150, 80, 0.2);
       background: linear-gradient(135deg, #3d3225 0%, #4a3f30 100%);
     }
 
-    .btn-return:active {
-      transform: translateY(0);
-    }
+    .btn-return:active { transform: translateY(0); }
+    .btn-return .arrow { font-size: 18px; transition: transform 0.2s ease; }
+    .btn-return:hover .arrow { transform: translateX(-3px); }
 
-    .btn-return .arrow {
-      font-size: 18px;
-      transition: transform 0.2s ease;
-    }
-
-    .btn-return:hover .arrow {
-      transform: translateX(-3px);
-    }
-
-    /* ── Divider ─────────────────────────────────────────────────── */
+    /* ── Divider ──────────────────────────────────────────────── */
     .divider {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 24px 0;
-      color: #c4b896;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      display: flex; align-items: center; gap: 16px;
+      margin: 20px 0;
+      color: #c4b896; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.1em;
     }
 
     .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
+      content: ''; flex: 1; height: 1px;
       background: linear-gradient(90deg, transparent, rgba(180, 150, 80, 0.2), transparent);
     }
 
-    /* ── Help text ───────────────────────────────────────────────── */
-    .help-text {
-      font-size: 12px;
-      color: #a89b84;
-      line-height: 1.7;
-    }
+    /* ── Help text ────────────────────────────────────────────── */
+    .help-text { font-size: 12px; color: #a89b84; line-height: 1.7; }
+    .help-text a { color: #8b6914; text-decoration: none; font-weight: 500; border-bottom: 1px solid rgba(139, 105, 20, 0.2); transition: border-color 0.2s ease; }
+    .help-text a:hover { border-color: #8b6914; }
 
-    .help-text a {
-      color: #8b6914;
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px solid rgba(139, 105, 20, 0.2);
-      transition: border-color 0.2s ease;
-    }
-
-    .help-text a:hover {
-      border-color: #8b6914;
-    }
-
-    /* ── Error state ─────────────────────────────────────────────── */
+    /* ── Error state ──────────────────────────────────────────── */
     .error-msg {
-      display: none;
-      padding: 14px 20px;
-      border-radius: 10px;
-      background: rgba(180, 80, 60, 0.06);
-      border: 1px solid rgba(180, 80, 60, 0.12);
-      color: #8a4a3a;
-      font-size: 13px;
-      margin-bottom: 20px;
-      line-height: 1.5;
+      display: none; padding: 14px 20px; border-radius: 10px;
+      background: rgba(180, 80, 60, 0.06); border: 1px solid rgba(180, 80, 60, 0.12);
+      color: #8a4a3a; font-size: 13px; margin-bottom: 20px; line-height: 1.5;
     }
 
-    .error-msg.show {
-      display: block;
-    }
+    .error-msg.show { display: block; }
 
-    /* ── Footer ──────────────────────────────────────────────────── */
-    .footer {
-      margin-top: 32px;
-      font-size: 11px;
-      color: #c4b896;
-      letter-spacing: 0.04em;
-    }
+    /* ── Footer ───────────────────────────────────────────────── */
+    .footer { margin-top: 32px; font-size: 11px; color: #c4b896; letter-spacing: 0.04em; }
+    .footer a { color: #a89b84; text-decoration: none; }
+    .footer a:hover { color: #8b6914; }
 
-    .footer a {
-      color: #a89b84;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      color: #8b6914;
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 540px) {
+      .card { padding: 40px 24px; }
+      h1 { font-size: 22px; }
+      .key-value { font-size: 9.5px; }
     }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <!-- Gold diamond logo mark -->
-    <div class="logo-mark">
-      <span>✦</span>
-    </div>
+    <div class="logo-mark"><span>&#10022;</span></div>
 
-    <h1>Welcome to Aether Pro</h1>
-    <p class="subtitle">
+    <h1 id="pageTitle">Welcome to Aether Pro</h1>
+    <p class="subtitle" id="pageSubtitle">
       Your purchase was successful.<br>
       Returning you to <strong>Aether</strong> to activate your license...
     </p>
@@ -322,87 +287,171 @@
     <!-- Error message (hidden by default) -->
     <div class="error-msg" id="errorMsg"></div>
 
-    <!-- Fallback section (shown after timeout) -->
+    <!-- License Key Display (populated by API or URL param) -->
+    <div class="key-section" id="keySection">
+      <p class="key-label">Your License Key</p>
+      <div class="key-box">
+        <p class="key-value" id="keyValue"></p>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyKey()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy Key
+      </button>
+    </div>
+
+    <!-- Fallback section (shown after timeout or on key display) -->
     <div class="fallback-section" id="fallbackSection">
       <a class="btn-return" id="returnBtn" href="#">
-        <span class="arrow">←</span>
+        <span class="arrow">&#8592;</span>
         Return to Aether to Activate Pro
       </a>
 
       <div class="divider">or</div>
 
       <p class="help-text">
-        If the button doesn't work, open <strong>Aether</strong> manually from your desktop.<br>
-        Your Pro license will activate automatically on next launch.<br><br>
-        Need help? <a href="mailto:support@paperhallway.com">Contact Paper Hallway Support</a>
+        Open <strong>Aether</strong> manually, click the trial badge, and paste your license key.<br><br>
+        Need help? <a href="mailto:hello@paperhallway.com">Contact Paper Hallway Support</a>
       </p>
     </div>
   </div>
 
   <p class="footer">
-    <a href="https://paperhallway.com">Paper Hallway</a> · Aether — AI File Intelligence
+    <a href="https://paperhallway.com">Paper Hallway</a> &middot; Aether &mdash; AI File Intelligence
   </p>
 
   <script>
+    var currentLicenseKey = '';
+
+    function copyKey() {
+      if (!currentLicenseKey) return;
+      navigator.clipboard.writeText(currentLicenseKey).then(function () {
+        var btn = document.getElementById('copyBtn');
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copied!';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy Key';
+          btn.classList.remove('copied');
+        }, 3000);
+      });
+    }
+
+    function showKey(key) {
+      currentLicenseKey = key;
+      document.getElementById('keyValue').textContent = key;
+      document.getElementById('keySection').classList.add('show');
+    }
+
+    function showSuccess(key) {
+      var spinner = document.getElementById('spinner');
+      var checkmark = document.getElementById('checkmark');
+      var status = document.getElementById('status');
+
+      spinner.style.display = 'none';
+      checkmark.classList.add('show');
+      status.textContent = 'Payment verified. License key generated.';
+      status.classList.add('success');
+
+      showKey(key);
+    }
+
+    function showFallback(deepLink) {
+      var fallback = document.getElementById('fallbackSection');
+      var returnBtn = document.getElementById('returnBtn');
+      returnBtn.href = deepLink || '#';
+      fallback.classList.add('show');
+    }
+
+    function showError(msg) {
+      var spinner = document.getElementById('spinner');
+      var status = document.getElementById('status');
+      var errorMsg = document.getElementById('errorMsg');
+
+      spinner.style.display = 'none';
+      status.textContent = '';
+      errorMsg.textContent = msg;
+      errorMsg.classList.add('show');
+    }
+
+    // ── Main Logic ──────────────────────────────────────────────
     (function () {
       var params = new URLSearchParams(window.location.search);
       var licenseKey = params.get('license_key') || '';
       var sessionId = params.get('session_id') || '';
+      var status = document.getElementById('status');
 
-      var spinner     = document.getElementById('spinner');
-      var checkmark   = document.getElementById('checkmark');
-      var status      = document.getElementById('status');
-      var fallback    = document.getElementById('fallbackSection');
-      var errorMsg    = document.getElementById('errorMsg');
-      var returnBtn   = document.getElementById('returnBtn');
+      // ── Case 1: license_key already in URL (from webhook email link) ──
+      if (licenseKey) {
+        var deepLink = 'aether://activate?license_key=' + encodeURIComponent(licenseKey);
+        document.getElementById('returnBtn').href = deepLink;
 
-      // ── No license_key or session_id? Show error ─────────────────
-      if (!licenseKey && !sessionId) {
-        spinner.style.display = 'none';
-        status.textContent = '';
-        errorMsg.textContent = 'No activation data found. If you just completed a purchase, please check your email for your license key, or contact hello@paperhallway.com.';
-        errorMsg.classList.add('show');
-        fallback.classList.add('show');
-        returnBtn.href = 'aether://activate';
+        // Try auto-redirect
+        try { window.location.replace(deepLink); } catch (e) {}
+
+        setTimeout(function () {
+          showSuccess(licenseKey);
+        }, 1500);
+
+        setTimeout(function () {
+          showFallback(deepLink);
+        }, 3500);
+
         return;
       }
 
-      // ── Build the deep link (license_key takes priority) ───────
-      var deepLink;
-      if (licenseKey) {
-        deepLink = 'aether://activate?license_key=' + encodeURIComponent(licenseKey);
-      } else {
-        deepLink = 'aether://activate?session_id=' + encodeURIComponent(sessionId);
+      // ── Case 2: session_id from Stripe redirect (need to fetch key) ──
+      if (sessionId) {
+        status.textContent = 'Verifying your purchase...';
+
+        fetch('/api/activate?session_id=' + encodeURIComponent(sessionId))
+          .then(function (resp) {
+            if (!resp.ok) throw new Error('API returned ' + resp.status);
+            return resp.json();
+          })
+          .then(function (data) {
+            if (data.success && data.license_key) {
+              var key = data.license_key;
+              var deepLink = 'aether://activate?license_key=' + encodeURIComponent(key);
+
+              // Update title with customer name
+              if (data.customer_name) {
+                document.getElementById('pageTitle').textContent = 'Welcome, ' + data.customer_name + '.';
+              }
+              document.getElementById('pageSubtitle').innerHTML =
+                'Payment confirmed.<br>Your <strong>Aether Pro</strong> license key is ready.';
+
+              showSuccess(key);
+
+              // Try auto-redirect to app
+              try { window.location.replace(deepLink); } catch (e) {}
+
+              setTimeout(function () {
+                showFallback(deepLink);
+              }, 2500);
+            } else {
+              throw new Error('No license key in response');
+            }
+          })
+          .catch(function (err) {
+            console.error('[Activate] API error:', err);
+            showError(
+              'We could not retrieve your license key automatically. ' +
+              'This usually means the server is still being configured. ' +
+              'Please check your email for your license key, or contact hello@paperhallway.com.'
+            );
+            // Still show the fallback with session_id deep link
+            var fallbackLink = 'aether://activate?session_id=' + encodeURIComponent(sessionId);
+            showFallback(fallbackLink);
+          });
+
+        return;
       }
-      returnBtn.href = deepLink;
 
-      // ── The Auto-Flick: try window.location.replace ────────────
-      // This is the most reliable method for custom protocol handlers.
-      // Using replace() instead of assign() so the bridge page doesn't
-      // stay in browser history.
-      try {
-        window.location.replace(deepLink);
-      } catch (e) {
-        console.warn('[Bridge] Direct redirect blocked:', e);
-      }
-
-      // ── After 1.5s: show optimistic success ────────────────────
-      setTimeout(function () {
-        spinner.style.display = 'none';
-        checkmark.classList.add('show');
-        status.textContent = 'Redirect sent to Aether';
-        status.classList.add('success');
-      }, 1500);
-
-      // ── After 4s: show the Safety Net button ───────────────────
-      // Some browsers block custom protocol redirects silently.
-      // The button gives the user a manual path.
-      setTimeout(function () {
-        status.textContent = 'Didn\'t redirect automatically? Use the button below.';
-        status.classList.remove('success');
-        status.classList.add('waiting');
-        fallback.classList.add('show');
-      }, 4000);
+      // ── Case 3: No parameters at all ──────────────────────────────────
+      showError(
+        'No activation data found. If you just completed a purchase, ' +
+        'please check your email for your license key, or contact hello@paperhallway.com.'
+      );
+      showFallback('aether://activate');
     })();
   </script>
 </body>
