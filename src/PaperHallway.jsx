@@ -837,6 +837,26 @@ function Footer() {
           </a>
         </div>
 
+        {/* Privacy link */}
+        <div className="text-center mt-8 mb-6">
+          <a
+            href="/privacy"
+            className="text-xs uppercase tracking-widest transition-colors duration-300"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--ink-faint)",
+              letterSpacing: "0.15em",
+              textDecoration: "none",
+              borderBottom: "1px solid transparent",
+              paddingBottom: "1px",
+            }}
+            onMouseEnter={(e) => { e.target.style.borderColor = "var(--ink-faint)"; e.target.style.color = "var(--ink-light)"; }}
+            onMouseLeave={(e) => { e.target.style.borderColor = "transparent"; e.target.style.color = "var(--ink-faint)"; }}
+          >
+            Privacy Policy
+          </a>
+        </div>
+
         {/* Bottom bar */}
         <div
           className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4"
