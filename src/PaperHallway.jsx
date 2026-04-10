@@ -881,7 +881,7 @@ function AetherPage({ onBack }) {
     return () => clearTimeout(t);
   }, []);
 
-  const DOWNLOAD_URL = "https://github.com/HMRogers/aether-alpha/releases/latest/download/Aether_Setup.msi";
+  const DOWNLOAD_URL = "/download/Aether_0.1.0_x64-setup.exe";
 
   return (
     <div style={{ background: "var(--paper)", minHeight: "100vh" }}>

@@ -94,7 +94,7 @@ function verifyStripeSignature(payload, sigHeader, secret) {
 
 function buildWelcomeEmail(customerEmail, licenseKey, customerName) {
   const displayName = customerName || "Architect";
-  const downloadUrl = "https://github.com/HMRogers/aether-alpha/releases/latest";
+  const downloadUrl = "https://paperhallway.com/download/Aether_0.1.0_x64-setup.exe";
   const deepLinkUrl = `aether://activate?license_key=${encodeURIComponent(licenseKey)}`;
   const bridgeUrl = `https://paperhallway.com/activate?license_key=${encodeURIComponent(licenseKey)}`;
 

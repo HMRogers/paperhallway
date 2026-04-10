@@ -1,0 +1,2 @@
+public/download/*.exe filter=lfs diff=lfs merge=lfs -text
+public/download/*.msi filter=lfs diff=lfs merge=lfs -text
