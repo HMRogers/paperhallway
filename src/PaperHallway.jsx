@@ -1,74 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 
 /*
-  PAPER HALLWAY — "The Digital Corridor"
+  PAPER HALLWAY — "The Digital Storefront"
   
   Aesthetic: Ink on Paper. Pencil-thin borders. Tactile serif typography.
   The entire experience feels like walking through a beautifully 
   illustrated architectural space rendered in fine pen on cream stock.
-*/
 
-const DOORS = [
-  {
-    id: "arcade",
-    title: "The Arcade",
-    subtitle: "Games",
-    number: "01",
-    description: "Indie games crafted with care. Worlds to explore, puzzles to solve, stories to live.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-12 h-12">
-        <rect x="8" y="14" width="32" height="22" rx="3" />
-        <circle cx="18" cy="25" r="4" />
-        <line x1="18" y1="21" x2="18" y2="29" />
-        <line x1="14" y1="25" x2="22" y2="25" />
-        <circle cx="32" cy="23" r="1.5" />
-        <circle cx="36" cy="27" r="1.5" />
-        <circle cx="28" cy="27" r="1.5" />
-      </svg>
-    ),
-    products: [
-      { id: "dothunter", name: "Dot Hunter", tagline: "Reflex Arcade Game" },
-    ],
-  },
-  {
-    id: "study",
-    title: "The Study",
-    subtitle: "Learning",
-    number: "02",
-    description: "Tools for the curious mind. Learn at your own pace, in your own way.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-12 h-12">
-        <path d="M12 8 L24 4 L36 8 L36 36 L24 32 L12 36 Z" />
-        <line x1="24" y1="4" x2="24" y2="32" />
-        <line x1="16" y1="14" x2="21" y2="12.5" />
-        <line x1="16" y1="18" x2="21" y2="16.5" />
-        <line x1="16" y1="22" x2="21" y2="20.5" />
-        <line x1="27" y1="12.5" x2="32" y2="14" />
-        <line x1="27" y1="16.5" x2="32" y2="18" />
-      </svg>
-    ),
-  },
-  {
-    id: "office",
-    title: "The Office",
-    subtitle: "Organization",
-    number: "03",
-    description: "Elegant apps to bring order to creative chaos. Plan, track, and ship.",
-    icon: (
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-12 h-12">
-        <rect x="10" y="6" width="28" height="36" rx="1" />
-        <line x1="16" y1="14" x2="32" y2="14" />
-        <line x1="16" y1="20" x2="32" y2="20" />
-        <line x1="16" y1="26" x2="28" y2="26" />
-        <rect x="16" y="31" width="5" height="5" rx="0.5" />
-        <path d="M17.5 33.5 L19 35 L22 32" strokeWidth="0.6" />
-      </svg>
-    ),
-    products: [
-      { id: "aether", name: "Aether", tagline: "AI File Intelligence" },
-    ],
-  },
-];
+  Live storefront — no waitlist, no early access. Products are available now.
+*/
 
 /* ---------- tiny helpers ---------- */
 function useInView(threshold = 0.15) {
@@ -133,14 +73,17 @@ function Nav({ onNavigate, currentView }) {
         {/* Links */}
         <div className="hidden sm:flex items-center gap-10">
           {currentView === "hallway" ? (
-            ["Arcade", "Study", "Office"].map((l) => (
+            <>
               <a
-                key={l}
-                href={`#${l.toLowerCase()}`}
+                href="#office"
                 className="relative text-xs uppercase tracking-widest transition-colors duration-300 group"
                 style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("office")?.scrollIntoView({ behavior: "smooth" });
+                }}
               >
-                {l}
+                Office
                 <span
                   className="absolute -bottom-1 left-0 h-px bg-current transition-all duration-500 origin-left"
                   style={{ width: 0 }}
@@ -151,7 +94,27 @@ function Nav({ onNavigate, currentView }) {
                   }}
                 />
               </a>
-            ))
+              <a
+                href="#arcade"
+                className="relative text-xs uppercase tracking-widest transition-colors duration-300 group"
+                style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("arcade")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Arcade
+                <span
+                  className="absolute -bottom-1 left-0 h-px bg-current transition-all duration-500 origin-left"
+                  style={{ width: 0 }}
+                  ref={(el) => {
+                    if (!el) return;
+                    el.parentElement.onmouseenter = () => (el.style.width = "100%");
+                    el.parentElement.onmouseleave = () => (el.style.width = "0");
+                  }}
+                />
+              </a>
+            </>
           ) : (
             <a
               href="#"
@@ -159,7 +122,7 @@ function Nav({ onNavigate, currentView }) {
               className="relative text-xs uppercase tracking-widest transition-colors duration-300"
               style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
             >
-              ← Back to Hallway
+              &larr; Back to Hallway
             </a>
           )}
         </div>
@@ -272,7 +235,7 @@ function Hero() {
               fontWeight: 400,
               fontStyle: "italic",
               transform: loaded ? "translateY(0)" : "translateY(110%)",
-              transition: "transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.65s",
+              transition: "transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.6s",
             }}
           >
             the Hallway.
@@ -301,10 +264,10 @@ function Hero() {
             transition: "all 1s ease 1.2s",
           }}
         >
-          Indie games, learning tools, and organization apps — all under one roof.
+          Indie games, productivity tools, and organization apps &mdash; crafted with care, all under one roof.
         </p>
 
-        {/* Request Access CTA */}
+        {/* Explore the Collection CTA */}
         <div
           className="mt-10"
           style={{
@@ -314,7 +277,7 @@ function Hero() {
           }}
         >
           <button
-            onClick={() => document.getElementById("request-access").scrollIntoView({ behavior: "smooth" })}
+            onClick={() => document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" })}
             className="group inline-flex items-center gap-4 px-8 py-4 transition-all duration-500"
             style={{
               fontFamily: "var(--font-body)",
@@ -329,7 +292,7 @@ function Hero() {
             onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            Request Early Access
+            Explore the Collection
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M6 1 L6 10 M3 7 L6 10 L9 7" stroke="var(--paper)" strokeWidth="0.9" fill="none" />
             </svg>
@@ -357,224 +320,6 @@ function Hero() {
               <path d="M3 16 L8 21 L13 16" stroke="var(--ink-faint)" strokeWidth="0.8" fill="none" />
             </svg>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* — Door Card — */
-function DoorCard({ door, index, onProductClick }) {
-  const [ref, visible] = useInView(0.2);
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      ref={ref}
-      id={door.id}
-      className="group relative"
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(60px)",
-        transition: `all 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${index * 0.15}s`,
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {/* The "door" */}
-      <div
-        className="relative cursor-pointer overflow-hidden"
-        style={{
-          border: "1px solid var(--border)",
-          background: "var(--paper)",
-          transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
-          boxShadow: hovered
-            ? "0 20px 60px rgba(60,55,48,0.08), 0 1px 3px rgba(60,55,48,0.04)"
-            : "0 1px 3px rgba(60,55,48,0.02)",
-          transform: hovered ? "translateY(-8px)" : "translateY(0)",
-        }}
-      >
-        {/* Top strip — room number */}
-        <div
-          className="px-6 sm:px-8 py-4 flex items-center justify-between"
-          style={{ borderBottom: "1px solid var(--border)" }}
-        >
-          <span
-            className="text-xs tracking-widest uppercase"
-            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
-          >
-            Room
-          </span>
-          <span
-            className="text-xs"
-            style={{ fontFamily: "var(--font-heading)", color: "var(--ink-light)", fontStyle: "italic" }}
-          >
-            {door.number}
-          </span>
-        </div>
-
-        {/* Main content area */}
-        <div className="px-6 sm:px-8 pt-10 pb-8 sm:pt-14 sm:pb-12">
-          {/* Icon */}
-          <div
-            className="mb-8 transition-transform duration-700"
-            style={{
-              color: "var(--ink-light)",
-              transform: hovered ? "translateY(-4px)" : "translateY(0)",
-            }}
-          >
-            {door.icon}
-          </div>
-
-          {/* Category label */}
-          <p
-            className="text-xs uppercase tracking-widest mb-3"
-            style={{
-              fontFamily: "var(--font-body)",
-              color: "var(--ink-faint)",
-              letterSpacing: "0.25em",
-              fontSize: "10px",
-            }}
-          >
-            {door.subtitle}
-          </p>
-
-          {/* Title */}
-          <h2
-            className="text-3xl sm:text-4xl mb-5"
-            style={{
-              fontFamily: "var(--font-heading)",
-              color: "var(--ink)",
-              fontWeight: 400,
-              lineHeight: 1.1,
-            }}
-          >
-            {door.title}
-          </h2>
-
-          {/* Description */}
-          <p
-            className="text-sm leading-relaxed mb-8"
-            style={{
-              fontFamily: "var(--font-body)",
-              color: "var(--ink-light)",
-              maxWidth: "280px",
-            }}
-          >
-            {door.description}
-          </p>
-
-          {/* Product buttons (for Office) */}
-          {door.products && door.products.length > 0 && (
-            <div className="flex flex-wrap gap-3 mb-6">
-              {door.products.map((product) => (
-                <button
-                  key={product.id}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onProductClick(product.id);
-                  }}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 transition-all duration-400"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: "11px",
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase",
-                    background: "var(--ink)",
-                    color: "var(--paper)",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-                >
-                  {product.name}
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                    <path d="M1 5 L8 5 M5.5 2.5 L8 5 L5.5 7.5" stroke="var(--paper)" strokeWidth="0.8" />
-                  </svg>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Enter link — only show for Study as "Coming Soon" */}
-          {door.id === "study" && (
-            <div className="flex items-center gap-3">
-              <span
-                className="text-xs uppercase tracking-widest"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  color: "var(--ink-faint)",
-                  letterSpacing: "0.2em",
-                  fontSize: "11px",
-                }}
-              >
-                Coming Soon
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Door "handle" accent */}
-        <div
-          className="absolute right-6 sm:right-8 top-1/2 -translate-y-1/2 transition-opacity duration-500"
-          style={{ opacity: hovered ? 1 : 0.15 }}
-        >
-          <div
-            style={{
-              width: "3px",
-              height: "32px",
-              borderRadius: "2px",
-              background: "var(--ink)",
-              opacity: 0.3,
-            }}
-          />
-        </div>
-
-        {/* Bottom thin accent line that extends on hover */}
-        <div
-          className="absolute bottom-0 left-0 h-px transition-all duration-700"
-          style={{
-            width: hovered ? "100%" : "0%",
-            background: "var(--ink)",
-            opacity: 0.15,
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-/* — Doors Section — */
-function DoorsSection({ onProductClick }) {
-  const [ref, visible] = useInView(0.1);
-
-  return (
-    <section ref={ref} className="relative px-6 sm:px-10 py-24 sm:py-36">
-      <div className="max-w-7xl mx-auto">
-        {/* Section label */}
-        <div
-          className="flex items-center gap-6 mb-16 sm:mb-24"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(30px)",
-            transition: "all 0.8s ease",
-          }}
-        >
-          <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
-          <span
-            className="text-xs uppercase tracking-widest"
-            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
-          >
-            Choose a door
-          </span>
-        </div>
-
-        {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {DOORS.map((door, i) => (
-            <DoorCard key={door.id} door={door} index={i} onProductClick={onProductClick} />
-          ))}
         </div>
       </div>
     </section>
@@ -612,176 +357,498 @@ function Divider() {
   );
 }
 
-/* — Footer / Email Signup — */
-function Footer() {
-  const [ref, visible] = useInView(0.2);
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [focused, setFocused] = useState(false);
+/* ====================================================================
+   FEATURED APP SHOWCASE CARDS
+   ==================================================================== */
 
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setSending(true);
-    setError("");
-    try {
-      const res = await fetch("/api/early-access", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        setSubmitted(true);
-      } else {
-        setError(data.error || "Something went wrong. Please try again.");
-      }
-    } catch {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setSending(false);
-    }
-  };
+function AetherShowcase({ onNavigate }) {
+  const [ref, visible] = useInView(0.15);
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <footer className="relative px-6 sm:px-10 py-24 sm:py-36">
+    <div
+      ref={ref}
+      id="office"
+      className="relative"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(60px)",
+        transition: "all 0.9s cubic-bezier(0.22, 1, 0.36, 1)",
+      }}
+    >
       <div
-        ref={ref}
-        className="max-w-2xl mx-auto text-center"
+        className="relative overflow-hidden transition-all duration-600"
         style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(40px)",
-          transition: "all 1s cubic-bezier(0.22, 1, 0.36, 1)",
+          border: "1px solid var(--border)",
+          background: "var(--paper)",
+          boxShadow: hovered
+            ? "0 20px 60px rgba(60,55,48,0.08), 0 1px 3px rgba(60,55,48,0.04)"
+            : "0 1px 3px rgba(60,55,48,0.02)",
+          transform: hovered ? "translateY(-4px)" : "translateY(0)",
         }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       >
-        {/* Decorative element */}
-        <svg viewBox="0 0 80 80" className="w-12 h-12 mx-auto mb-8" fill="none" stroke="var(--ink)" style={{ opacity: 0.15 }}>
-          <rect x="15" y="5" width="50" height="70" rx="2" strokeWidth="0.8" />
-          <rect x="25" y="25" width="12" height="20" rx="1" strokeWidth="0.6" />
-          <rect x="43" y="25" width="12" height="20" rx="1" strokeWidth="0.6" />
-          <circle cx="40" cy="60" r="2" strokeWidth="0.6" />
-        </svg>
-
-        <p
-          id="request-access"
-          className="text-xs uppercase tracking-widest mb-4"
-          style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+        {/* Top strip */}
+        <div
+          className="px-6 sm:px-10 py-4 flex items-center justify-between"
+          style={{ borderBottom: "1px solid var(--border)" }}
         >
-          Get early access
-        </p>
+          <span
+            className="text-xs tracking-widest uppercase"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+          >
+            The Office
+          </span>
+          <span
+            className="text-xs"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.15em", fontSize: "10px", textTransform: "uppercase" }}
+          >
+            Windows
+          </span>
+        </div>
 
-        <h2
-          className="text-3xl sm:text-5xl mb-4"
-          style={{
-            fontFamily: "var(--font-heading)",
-            color: "var(--ink)",
-            fontWeight: 400,
-            lineHeight: 1.15,
-          }}
-        >
-          Step inside.
-        </h2>
+        {/* Main content */}
+        <div className="px-6 sm:px-10 py-12 sm:py-16 flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
+          {/* Left: icon + text */}
+          <div className="flex-1">
+            {/* Icon */}
+            <div className="mb-6" style={{ color: "var(--ink-light)" }}>
+              <svg viewBox="0 0 64 64" className="w-14 h-14" fill="none" stroke="currentColor" strokeWidth="0.6">
+                <polygon points="32,4 58,18 58,46 32,60 6,46 6,18" />
+                <polygon points="32,14 48,22 48,38 32,46 16,38 16,22" />
+                <circle cx="32" cy="32" r="4" />
+              </svg>
+            </div>
 
-        <p
-          className="text-sm sm:text-base mb-12 leading-relaxed"
-          style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "400px", margin: "0 auto" }}
-        >
-          Be the first to explore when the doors open. Join the early access list.
-        </p>
+            <h2
+              className="text-4xl sm:text-5xl mb-3"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.1 }}
+            >
+              Aether
+            </h2>
 
-        {!submitted ? (
-          <>
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-stretch gap-3 max-w-md mx-auto">
-              <div className="relative flex-1">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setFocused(false)}
-                  placeholder="your@email.com"
-                  required
-                  className="w-full px-5 py-3.5 text-sm outline-none transition-all duration-500"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    color: "var(--ink)",
-                    background: "transparent",
-                    border: `1px solid ${focused ? "var(--ink)" : "var(--border)"}`,
-                    letterSpacing: "0.02em",
-                  }}
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={sending}
-                className="px-8 py-3.5 text-xs uppercase tracking-widest transition-all duration-500 hover:shadow-lg"
+            <p
+              className="text-sm sm:text-base mb-2 leading-relaxed"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontStyle: "italic" }}
+            >
+              Order from Chaos.
+            </p>
+
+            <p
+              className="text-sm leading-relaxed mb-8"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "420px" }}
+            >
+              Local AI for the Modern Professional. Aether reads, classifies, and organises your files &mdash; entirely on your machine. No cloud. No compromise. Privacy-first file intelligence powered by a local LLM.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-start gap-4">
+              <a
+                href="https://buy.stripe.com/00w3coals7ns3i50cB8Vi00"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500 hover:shadow-lg"
                 style={{
                   fontFamily: "var(--font-body)",
+                  fontSize: "11px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
                   background: "var(--ink)",
                   color: "var(--paper)",
-                  border: "none",
-                  letterSpacing: "0.2em",
-                  cursor: sending ? "wait" : "pointer",
-                  fontSize: "11px",
-                  opacity: sending ? 0.6 : 1,
+                  textDecoration: "none",
+                  cursor: "pointer",
                 }}
-                onMouseEnter={(e) => { if (!sending) e.target.style.opacity = "0.85"; }}
-                onMouseLeave={(e) => { if (!sending) e.target.style.opacity = "1"; }}
+                onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.88"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
               >
-                {sending ? "Sending..." : "Request Access"}
-              </button>
-            </form>
-            {error && (
-              <p className="mt-3 text-xs" style={{ fontFamily: "var(--font-body)", color: "#c0392b" }}>
-                {error}
-              </p>
-            )}
-          </>
-        ) : (
-          <div
-            className="py-4"
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--paper)" strokeWidth="1.5">
+                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+                </svg>
+                Buy Aether Pro
+              </a>
+
+              <a
+                href="/download/Aether_0.1.0_x64-setup.exe"
+                className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "11px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  background: "transparent",
+                  color: "var(--ink)",
+                  border: "1px solid var(--border)",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ink)">
+                  <path d="M0 3.5L10.1 4.9V14.7H0V3.5ZM11.1 4.7L24 2.9V14.7H11.1V4.7ZM0 15.8H10.1V25.6L0 24.2V15.8ZM11.1 15.8H24V26.8L11.1 25.3V15.8Z" />
+                </svg>
+                Download Free
+              </a>
+            </div>
+
+            <p
+              className="text-xs mt-4"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
+            >
+              Free tier included &middot; Pro unlocks advanced features
+            </p>
+          </div>
+
+          {/* Right: feature highlights */}
+          <div className="flex-shrink-0 w-full lg:w-72">
+            <p
+              className="text-xs uppercase tracking-widest mb-6"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.25em", fontSize: "10px" }}
+            >
+              Highlights
+            </p>
+            {[
+              { label: "Local AI Engine", desc: "All processing on your machine via Ollama" },
+              { label: "Smart File Sorting", desc: "Drop a folder, Aether organises everything" },
+              { label: "Vector Memory", desc: "Search by meaning, not just keywords" },
+              { label: "Privacy First", desc: "No cloud. No telemetry. No accounts" },
+            ].map((item, i) => (
+              <div key={i} className="mb-5 pb-5" style={{ borderBottom: i < 3 ? "1px solid var(--border)" : "none" }}>
+                <p
+                  className="text-sm mb-1"
+                  style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic" }}
+                >
+                  {item.label}
+                </p>
+                <p className="text-xs leading-relaxed" style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}>
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Learn more link */}
+        <div
+          className="px-6 sm:px-10 py-5 flex items-center justify-between"
+          style={{ borderTop: "1px solid var(--border)" }}
+        >
+          <button
+            onClick={() => onNavigate("aether")}
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest transition-colors duration-300"
             style={{
               fontFamily: "var(--font-body)",
               color: "var(--ink-light)",
-              fontSize: "14px",
+              letterSpacing: "0.2em",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "11px",
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-light)")}
           >
-            <p style={{ fontFamily: "var(--font-heading)", fontStyle: "italic", fontSize: "18px", color: "var(--ink)" }}>
-              Thank you.
-            </p>
-            <p className="mt-2" style={{ fontSize: "13px" }}>We'll be in touch at {email}</p>
-          </div>
-        )}
+            Learn more about Aether
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1 5 L8 5 M5.5 2.5 L8 5 L5.5 7.5" stroke="currentColor" strokeWidth="0.8" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* Contact */}
-        <p className="mt-8 text-xs" style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)" }}>
-          Or write to us at{" "}
+function DotHunterShowcase({ onNavigate }) {
+  const [ref, visible] = useInView(0.15);
+  const [hovered, setHovered] = useState(false);
+
+  const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.paperhallway.dothunter&hl=en";
+  const SITE_URL = "https://dothuntergame.app/";
+
+  return (
+    <div
+      ref={ref}
+      id="arcade"
+      className="relative"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(60px)",
+        transition: "all 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s",
+      }}
+    >
+      <div
+        className="relative overflow-hidden transition-all duration-600"
+        style={{
+          border: "1px solid var(--border)",
+          background: "var(--paper)",
+          boxShadow: hovered
+            ? "0 20px 60px rgba(60,55,48,0.08), 0 1px 3px rgba(60,55,48,0.04)"
+            : "0 1px 3px rgba(60,55,48,0.02)",
+          transform: hovered ? "translateY(-4px)" : "translateY(0)",
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        {/* Top strip */}
+        <div
+          className="px-6 sm:px-10 py-4 flex items-center justify-between"
+          style={{ borderBottom: "1px solid var(--border)" }}
+        >
+          <span
+            className="text-xs tracking-widest uppercase"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+          >
+            The Arcade
+          </span>
+          <span
+            className="text-xs"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.15em", fontSize: "10px", textTransform: "uppercase" }}
+          >
+            Android
+          </span>
+        </div>
+
+        {/* Main content */}
+        <div className="px-6 sm:px-10 py-12 sm:py-16 flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
+          {/* Left: icon + text */}
+          <div className="flex-1">
+            {/* Icon */}
+            <div className="mb-6" style={{ color: "var(--ink-light)" }}>
+              <svg viewBox="0 0 64 64" className="w-14 h-14" fill="none" stroke="currentColor" strokeWidth="0.6">
+                <circle cx="32" cy="32" r="28" />
+                <circle cx="32" cy="32" r="18" />
+                <circle cx="32" cy="32" r="8" />
+                <circle cx="32" cy="32" r="3" fill="currentColor" />
+              </svg>
+            </div>
+
+            <h2
+              className="text-4xl sm:text-5xl mb-3"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.1 }}
+            >
+              Dot Hunter
+            </h2>
+
+            <p
+              className="text-sm sm:text-base mb-2 leading-relaxed"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontStyle: "italic" }}
+            >
+              Hunt the dot. Beat the clock.
+            </p>
+
+            <p
+              className="text-sm leading-relaxed mb-8"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "420px" }}
+            >
+              A minimalist reflex game where precision meets speed. Tap glowing dots before they disappear, climb the ranks, and prove your reflexes. No ads. No tracking. Just pure arcade gaming.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-start gap-4">
+              <a
+                href={PLAY_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500 hover:shadow-lg"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "11px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  background: "var(--ink)",
+                  color: "var(--paper)",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.88"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
+                  <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.303 2.303-8.635-8.635z" />
+                </svg>
+                Get on Google Play
+              </a>
+
+              <a
+                href={SITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "11px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  background: "transparent",
+                  color: "var(--ink)",
+                  border: "1px solid var(--border)",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                Visit Site
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M1 9 L9 1 M4 1 L9 1 L9 6" stroke="var(--ink)" strokeWidth="0.8" />
+                </svg>
+              </a>
+            </div>
+
+            <p
+              className="text-xs mt-4"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
+            >
+              Free on Google Play &middot; No ads &middot; No tracking
+            </p>
+          </div>
+
+          {/* Right: feature highlights */}
+          <div className="flex-shrink-0 w-full lg:w-72">
+            <p
+              className="text-xs uppercase tracking-widest mb-6"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.25em", fontSize: "10px" }}
+            >
+              Highlights
+            </p>
+            {[
+              { label: "Lightning Reflexes", desc: "Tap glowing dots before they vanish" },
+              { label: "Multiple Game Modes", desc: "Classic, Timed, Zen, and Hardcore" },
+              { label: "Achievements & Streaks", desc: "Unlock badges and climb the ranks" },
+              { label: "Minimalist Design", desc: "Clean visuals, smooth animations, zero clutter" },
+            ].map((item, i) => (
+              <div key={i} className="mb-5 pb-5" style={{ borderBottom: i < 3 ? "1px solid var(--border)" : "none" }}>
+                <p
+                  className="text-sm mb-1"
+                  style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic" }}
+                >
+                  {item.label}
+                </p>
+                <p className="text-xs leading-relaxed" style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}>
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Learn more link */}
+        <div
+          className="px-6 sm:px-10 py-5 flex items-center justify-between"
+          style={{ borderTop: "1px solid var(--border)" }}
+        >
+          <button
+            onClick={() => onNavigate("dothunter")}
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest transition-colors duration-300"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--ink-light)",
+              letterSpacing: "0.2em",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "11px",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-light)")}
+          >
+            Learn more about Dot Hunter
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1 5 L8 5 M5.5 2.5 L8 5 L5.5 7.5" stroke="currentColor" strokeWidth="0.8" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* — Collection Section — */
+function CollectionSection({ onNavigate }) {
+  const [ref, visible] = useInView(0.1);
+
+  return (
+    <section id="collection" ref={ref} className="relative px-6 sm:px-10 py-24 sm:py-36">
+      <div className="max-w-5xl mx-auto">
+        {/* Section label */}
+        <div
+          className="flex items-center gap-6 mb-16 sm:mb-24"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(30px)",
+            transition: "all 0.8s ease",
+          }}
+        >
+          <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
+          <span
+            className="text-xs uppercase tracking-widest"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+          >
+            The Collection
+          </span>
+        </div>
+
+        {/* App showcase cards */}
+        <div className="flex flex-col gap-10 sm:gap-14">
+          <AetherShowcase onNavigate={onNavigate} />
+          <DotHunterShowcase onNavigate={onNavigate} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* — Footer — */
+function Footer() {
+  return (
+    <footer className="relative px-6 sm:px-10 py-16 sm:py-24">
+      <div className="max-w-5xl mx-auto">
+        {/* Decorative element */}
+        <div className="text-center mb-12">
+          <svg viewBox="0 0 80 80" className="w-10 h-10 mx-auto mb-6" fill="none" stroke="var(--ink)" style={{ opacity: 0.15 }}>
+            <rect x="15" y="5" width="50" height="70" rx="2" strokeWidth="0.8" />
+            <rect x="25" y="25" width="12" height="20" rx="1" strokeWidth="0.6" />
+            <rect x="43" y="25" width="12" height="20" rx="1" strokeWidth="0.6" />
+            <circle cx="40" cy="60" r="2" strokeWidth="0.6" />
+          </svg>
+          <p
+            className="text-sm leading-relaxed"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "400px", margin: "0 auto" }}
+          >
+            Questions, feedback, or just want to say hello? We&rsquo;d love to hear from you.
+          </p>
           <a
             href="mailto:hello@paperhallway.com"
-            className="transition-colors duration-300"
-            style={{ color: "var(--ink-light)", borderBottom: "1px solid var(--border)" }}
-            onMouseEnter={(e) => (e.target.style.borderColor = "var(--ink)")}
-            onMouseLeave={(e) => (e.target.style.borderColor = "var(--border)")}
+            className="inline-block mt-4 text-xs uppercase tracking-widest transition-colors duration-300"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--ink-light)",
+              letterSpacing: "0.2em",
+              textDecoration: "none",
+              borderBottom: "1px solid var(--border)",
+              paddingBottom: "2px",
+            }}
+            onMouseEnter={(e) => { e.target.style.borderColor = "var(--ink)"; e.target.style.color = "var(--ink)"; }}
+            onMouseLeave={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.color = "var(--ink-light)"; }}
           >
             hello@paperhallway.com
           </a>
-        </p>
-      </div>
+        </div>
 
-      {/* Bottom bar */}
-      <div
-        className="max-w-7xl mx-auto mt-24 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4"
-        style={{ borderTop: "1px solid var(--border)" }}
-      >
-        <span className="text-xs" style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.1em" }}>
-          &copy; {new Date().getFullYear()} Paper Hallway
-        </span>
-        <span className="text-xs" style={{ fontFamily: "var(--font-heading)", color: "var(--ink-faint)", fontStyle: "italic" }}>
-          paperhallway.com
-        </span>
+        {/* Bottom bar */}
+        <div
+          className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4"
+          style={{ borderTop: "1px solid var(--border)" }}
+        >
+          <span className="text-xs" style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.1em" }}>
+            &copy; {new Date().getFullYear()} Paper Hallway
+          </span>
+          <span className="text-xs" style={{ fontFamily: "var(--font-heading)", color: "var(--ink-faint)", fontStyle: "italic" }}>
+            paperhallway.com
+          </span>
+        </div>
       </div>
     </footer>
   );
@@ -919,18 +986,11 @@ function AetherPage({ onBack }) {
           {/* Breadcrumb */}
           <div
             className="overflow-hidden mb-6"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transition: "opacity 0.8s ease 0.3s",
-            }}
+            style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.8s ease 0.3s" }}
           >
             <p
               className="text-xs uppercase tracking-widest"
-              style={{
-                fontFamily: "var(--font-body)",
-                color: "var(--ink-faint)",
-                letterSpacing: "0.3em",
-              }}
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em" }}
             >
               <a
                 href="#"
@@ -1001,7 +1061,7 @@ function AetherPage({ onBack }) {
               transition: "all 1s ease 1.1s",
             }}
           >
-            Local AI for the Modern Professional. Aether reads, classifies, and organises your files — entirely on your machine. No cloud. No compromise.
+            Local AI for the Modern Professional. Aether reads, classifies, and organises your files &mdash; entirely on your machine. No cloud. No compromise.
           </p>
 
           {/* CTA */}
@@ -1013,7 +1073,6 @@ function AetherPage({ onBack }) {
               transition: "all 1s ease 1.3s",
             }}
           >
-            {/* Primary: Buy Aether Pro */}
             <a
               href="https://buy.stripe.com/00w3coals7ns3i50cB8Vi00"
               target="_blank"
@@ -1038,7 +1097,6 @@ function AetherPage({ onBack }) {
               Buy Aether Pro
             </a>
 
-            {/* Secondary: Download Free */}
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <a
                 href={DOWNLOAD_URL}
@@ -1060,7 +1118,7 @@ function AetherPage({ onBack }) {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ink)">
                   <path d="M0 3.5L10.1 4.9V14.7H0V3.5ZM11.1 4.7L24 2.9V14.7H11.1V4.7ZM0 15.8H10.1V25.6L0 24.2V15.8ZM11.1 15.8H24V26.8L11.1 25.3V15.8Z" />
                 </svg>
-                Download Free — Windows
+                Download Free &mdash; Windows
               </a>
             </div>
 
@@ -1076,10 +1134,7 @@ function AetherPage({ onBack }) {
         {/* Scroll indicator */}
         <div
           className="absolute bottom-12"
-          style={{
-            opacity: loaded ? 1 : 0,
-            transition: "opacity 1s ease 1.8s",
-          }}
+          style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s ease 1.8s" }}
         >
           <svg width="16" height="24" viewBox="0 0 16 24" fill="none" className="animate-gentle-bounce">
             <rect x="5.5" y="0.5" width="5" height="10" rx="2.5" stroke="var(--ink-faint)" strokeWidth="0.8" />
@@ -1179,7 +1234,6 @@ function AetherPage({ onBack }) {
           </p>
 
           <div className="flex flex-col items-center gap-5">
-            {/* Primary: Buy Aether Pro */}
             <a
               href="https://buy.stripe.com/00w3coals7ns3i50cB8Vi00"
               target="_blank"
@@ -1204,7 +1258,6 @@ function AetherPage({ onBack }) {
               Buy Aether Pro
             </a>
 
-            {/* Secondary: Download Free */}
             <a
               href={DOWNLOAD_URL}
               className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
@@ -1227,7 +1280,7 @@ function AetherPage({ onBack }) {
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-              Download Free — Windows
+              Download Free &mdash; Windows
             </a>
 
             <p
@@ -1442,18 +1495,11 @@ function DotHunterPage({ onBack }) {
           {/* Breadcrumb */}
           <div
             className="overflow-hidden mb-6"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transition: "opacity 0.8s ease 0.3s",
-            }}
+            style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.8s ease 0.3s" }}
           >
             <p
               className="text-xs uppercase tracking-widest"
-              style={{
-                fontFamily: "var(--font-body)",
-                color: "var(--ink-faint)",
-                letterSpacing: "0.3em",
-              }}
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em" }}
             >
               <a
                 href="#"
@@ -1559,7 +1605,6 @@ function DotHunterPage({ onBack }) {
               </svg>
               Test Now
             </a>
-
             <a
               href={SITE_URL}
               target="_blank"
@@ -1723,7 +1768,7 @@ function DotHunterPage({ onBack }) {
               onMouseEnter={(e) => (e.target.style.color = "var(--ink)")}
               onMouseLeave={(e) => (e.target.style.color = "var(--ink-faint)")}
             >
-              \u2190 Back to the Hallway
+              &larr; Back to the Hallway
             </a>
           </div>
         </div>
@@ -1754,16 +1799,6 @@ export default function PaperHallway() {
   const handleNavigate = (view) => {
     setCurrentView(view);
     window.scrollTo(0, 0);
-  };
-
-  const handleProductClick = (productId) => {
-    if (productId === "aether") {
-      setCurrentView("aether");
-      window.scrollTo(0, 0);
-    } else if (productId === "dothunter") {
-      setCurrentView("dothunter");
-      window.scrollTo(0, 0);
-    }
   };
 
   return (
@@ -1840,7 +1875,7 @@ export default function PaperHallway() {
           <>
             <Hero />
             <Divider />
-            <DoorsSection onProductClick={handleProductClick} />
+            <CollectionSection onNavigate={handleNavigate} />
             <Divider />
             <Footer />
           </>
