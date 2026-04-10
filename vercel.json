@@ -3,6 +3,7 @@
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/activate", "destination": "/activate.html" },
     { "source": "/download/(.*)", "destination": "/download/$1" },
+    { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
