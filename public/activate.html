@@ -346,6 +346,7 @@
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search);
+      var licenseKey = params.get('license_key') || '';
       var sessionId = params.get('session_id') || '';
 
       var spinner     = document.getElementById('spinner');
@@ -355,19 +356,24 @@
       var errorMsg    = document.getElementById('errorMsg');
       var returnBtn   = document.getElementById('returnBtn');
 
-      // ── No session_id? Show error ──────────────────────────────
-      if (!sessionId) {
+      // ── No license_key or session_id? Show error ─────────────────
+      if (!licenseKey && !sessionId) {
         spinner.style.display = 'none';
         status.textContent = '';
-        errorMsg.textContent = 'No session ID found. If you just completed a purchase, please check your email for a confirmation link, or contact support.';
+        errorMsg.textContent = 'No activation data found. If you just completed a purchase, please check your email for your license key, or contact hello@paperhallway.com.';
         errorMsg.classList.add('show');
         fallback.classList.add('show');
         returnBtn.href = 'aether://activate';
         return;
       }
 
-      // ── Build the deep link ────────────────────────────────────
-      var deepLink = 'aether://activate?session_id=' + encodeURIComponent(sessionId);
+      // ── Build the deep link (license_key takes priority) ───────
+      var deepLink;
+      if (licenseKey) {
+        deepLink = 'aether://activate?license_key=' + encodeURIComponent(licenseKey);
+      } else {
+        deepLink = 'aether://activate?session_id=' + encodeURIComponent(sessionId);
+      }
       returnBtn.href = deepLink;
 
       // ── The Auto-Flick: try window.location.replace ────────────
