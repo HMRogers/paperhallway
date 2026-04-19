@@ -802,6 +802,38 @@ function CollectionSection({ onNavigate }) {
 
 /* — Footer — */
 function Footer() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !email.includes("@")) {
+      setStatus("error");
+      setErrorMsg("Please enter a valid email.");
+      return;
+    }
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/early-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setEmail("");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setStatus("error");
+        setErrorMsg(data.error || "Something went wrong.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMsg("Network error. Please try again.");
+    }
+  };
+
   return (
     <footer className="relative px-6 sm:px-10 py-16 sm:py-24">
       <div className="max-w-5xl mx-auto">
@@ -835,6 +867,101 @@ function Footer() {
           >
             hello@paperhallway.com
           </a>
+        </div>
+
+        {/* ── Join the Hallway — Email Capture ── */}
+        <div
+          className="text-center py-12 my-8"
+          style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}
+        >
+          <p
+            className="text-xs uppercase tracking-widest mb-3"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+          >
+            Stay in the loop
+          </p>
+          <h3
+            className="text-2xl sm:text-3xl mb-3"
+            style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic" }}
+          >
+            Join the Hallway
+          </h3>
+          <p
+            className="text-sm mb-8 leading-relaxed"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "380px", margin: "0 auto 2rem" }}
+          >
+            New releases, updates, and the occasional letter &mdash; delivered with care.
+          </p>
+
+          {status === "success" ? (
+            <div
+              className="inline-flex items-center gap-2"
+              style={{ opacity: 1, transition: "opacity 0.5s ease" }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="7" stroke="var(--ink)" strokeWidth="0.8" />
+                <path d="M5 8 L7 10 L11 6" stroke="var(--ink)" strokeWidth="0.8" fill="none" />
+              </svg>
+              <span
+                className="text-sm"
+                style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontStyle: "italic" }}
+              >
+                Welcome to the hallway.
+              </span>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+              <div className="relative flex-1 w-full">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); if (status === "error") setStatus("idle"); }}
+                  placeholder="your@email.com"
+                  className="w-full text-sm py-3 px-4 outline-none transition-all duration-300"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    color: "var(--ink)",
+                    background: "transparent",
+                    border: "1px solid var(--border)",
+                    borderRadius: "0",
+                    letterSpacing: "0.03em",
+                  }}
+                  onFocus={(e) => { e.target.style.borderColor = "var(--ink-light)"; }}
+                  onBlur={(e) => { e.target.style.borderColor = "var(--border)"; }}
+                  disabled={status === "loading"}
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="text-xs uppercase tracking-widest py-3 px-6 transition-all duration-300"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  color: status === "loading" ? "var(--ink-faint)" : "var(--paper)",
+                  background: status === "loading" ? "var(--border)" : "var(--ink)",
+                  border: "1px solid var(--ink)",
+                  letterSpacing: "0.2em",
+                  cursor: status === "loading" ? "wait" : "pointer",
+                  borderRadius: "0",
+                  whiteSpace: "nowrap",
+                  fontSize: "11px",
+                }}
+                onMouseEnter={(e) => { if (status !== "loading") { e.target.style.background = "transparent"; e.target.style.color = "var(--ink)"; } }}
+                onMouseLeave={(e) => { if (status !== "loading") { e.target.style.background = "var(--ink)"; e.target.style.color = "var(--paper)"; } }}
+              >
+                {status === "loading" ? "Sending..." : "Subscribe"}
+              </button>
+            </form>
+          )}
+
+          {status === "error" && (
+            <p
+              className="text-xs mt-3"
+              style={{ fontFamily: "var(--font-body)", color: "#C4736E" }}
+            >
+              {errorMsg}
+            </p>
+          )}
         </div>
 
         {/* Privacy link */}
