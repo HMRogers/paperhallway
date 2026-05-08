@@ -264,7 +264,7 @@ function Hero() {
             transition: "all 1s ease 1.2s",
           }}
         >
-          Indie games, productivity tools, and organization apps &mdash; crafted with care, all under one roof.
+          A boutique AI studio building privacy-first tools and autonomous services.
         </p>
 
         {/* Explore the Collection CTA */}
@@ -560,12 +560,9 @@ function AetherShowcase({ onNavigate }) {
   );
 }
 
-function DotHunterShowcase({ onNavigate }) {
+function SwissFlowShowcase() {
   const [ref, visible] = useInView(0.15);
   const [hovered, setHovered] = useState(false);
-
-  const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.paperhallway.dothunter&hl=en";
-  const SITE_URL = "https://dothuntergame.app/";
 
   return (
     <div
@@ -600,13 +597,13 @@ function DotHunterShowcase({ onNavigate }) {
             className="text-xs tracking-widest uppercase"
             style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
           >
-            The Arcade
+            Content Engine
           </span>
           <span
             className="text-xs"
             style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.15em", fontSize: "10px", textTransform: "uppercase" }}
           >
-            Android
+            AI Service
           </span>
         </div>
 
@@ -617,10 +614,13 @@ function DotHunterShowcase({ onNavigate }) {
             {/* Icon */}
             <div className="mb-6" style={{ color: "var(--ink-light)" }}>
               <svg viewBox="0 0 64 64" className="w-14 h-14" fill="none" stroke="currentColor" strokeWidth="0.6">
-                <circle cx="32" cy="32" r="28" />
-                <circle cx="32" cy="32" r="18" />
-                <circle cx="32" cy="32" r="8" />
-                <circle cx="32" cy="32" r="3" fill="currentColor" />
+                <rect x="6" y="10" width="52" height="36" rx="2" />
+                <line x1="6" y1="20" x2="58" y2="20" />
+                <line x1="20" y1="10" x2="20" y2="46" />
+                <line x1="26" y1="28" x2="50" y2="28" />
+                <line x1="26" y1="34" x2="44" y2="34" />
+                <line x1="26" y1="40" x2="38" y2="40" />
+                <path d="M32 50 L32 56 M22 56 L42 56" />
               </svg>
             </div>
 
@@ -628,29 +628,27 @@ function DotHunterShowcase({ onNavigate }) {
               className="text-4xl sm:text-5xl mb-3"
               style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.1 }}
             >
-              Dot Hunter
+              SwissFlow
             </h2>
 
             <p
               className="text-sm sm:text-base mb-2 leading-relaxed"
               style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontStyle: "italic" }}
             >
-              Hunt the dot. Beat the clock.
+              The Executive Content Engine.
             </p>
 
             <p
               className="text-sm leading-relaxed mb-8"
               style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "420px" }}
             >
-              A minimalist reflex game where precision meets speed. Tap glowing dots before they disappear, climb the ranks, and prove your reflexes. No ads. No tracking. Just pure arcade gaming.
+              Turn one raw video into a month of premium text assets.
             </p>
 
-            {/* CTAs */}
+            {/* CTA */}
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <a
-                href={PLAY_STORE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/portal"
                 className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500 hover:shadow-lg"
                 style={{
                   fontFamily: "var(--font-body)",
@@ -665,44 +663,12 @@ function DotHunterShowcase({ onNavigate }) {
                 onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.88"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--paper)">
-                  <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.303 2.303-8.635-8.635z" />
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M6 1 L11 6 L6 11 M1 6 L11 6" stroke="var(--paper)" strokeWidth="0.9" fill="none" />
                 </svg>
-                Get on Google Play
-              </a>
-
-              <a
-                href={SITE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "11px",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  background: "transparent",
-                  color: "var(--ink)",
-                  border: "1px solid var(--border)",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
-              >
-                Visit Site
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M1 9 L9 1 M4 1 L9 1 L9 6" stroke="var(--ink)" strokeWidth="0.8" />
-                </svg>
+                Enter Portal
               </a>
             </div>
-
-            <p
-              className="text-xs mt-4"
-              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
-            >
-              Free on Google Play &middot; No ads &middot; No tracking
-            </p>
           </div>
 
           {/* Right: feature highlights */}
@@ -714,10 +680,10 @@ function DotHunterShowcase({ onNavigate }) {
               Highlights
             </p>
             {[
-              { label: "Lightning Reflexes", desc: "Tap glowing dots before they vanish" },
-              { label: "Multiple Game Modes", desc: "Classic, Timed, Zen, and Hardcore" },
-              { label: "Achievements & Streaks", desc: "Unlock badges and climb the ranks" },
-              { label: "Minimalist Design", desc: "Clean visuals, smooth animations, zero clutter" },
+              { label: "One Video, Thirty Days", desc: "A single raw recording becomes a full month of content" },
+              { label: "Premium Text Assets", desc: "Articles, threads, newsletters, and scripts — all on-brand" },
+              { label: "Executive-Grade Output", desc: "Polished, authoritative copy ready to publish" },
+              { label: "Autonomous Pipeline", desc: "AI-driven workflow with minimal manual input required" },
             ].map((item, i) => (
               <div key={i} className="mb-5 pb-5" style={{ borderBottom: i < 3 ? "1px solid var(--border)" : "none" }}>
                 <p
@@ -734,31 +700,17 @@ function DotHunterShowcase({ onNavigate }) {
           </div>
         </div>
 
-        {/* Learn more link */}
+        {/* Bottom bar */}
         <div
-          className="px-6 sm:px-10 py-5 flex items-center justify-between"
+          className="px-6 sm:px-10 py-5"
           style={{ borderTop: "1px solid var(--border)" }}
         >
-          <button
-            onClick={() => onNavigate("dothunter")}
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest transition-colors duration-300"
-            style={{
-              fontFamily: "var(--font-body)",
-              color: "var(--ink-light)",
-              letterSpacing: "0.2em",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "11px",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink)")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-light)")}
+          <span
+            className="text-xs"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.1em" }}
           >
-            Learn more about Dot Hunter
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <path d="M1 5 L8 5 M5.5 2.5 L8 5 L5.5 7.5" stroke="currentColor" strokeWidth="0.8" />
-            </svg>
-          </button>
+            Autonomous &middot; Privacy-first &middot; Built for executives
+          </span>
         </div>
       </div>
     </div>
@@ -793,7 +745,7 @@ function CollectionSection({ onNavigate }) {
         {/* App showcase cards */}
         <div className="flex flex-col gap-10 sm:gap-14">
           <AetherShowcase onNavigate={onNavigate} />
-          <DotHunterShowcase onNavigate={onNavigate} />
+          <SwissFlowShowcase />
         </div>
       </div>
     </section>
