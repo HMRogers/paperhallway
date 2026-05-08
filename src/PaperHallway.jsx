@@ -647,7 +647,7 @@ function SyntheseShowcase() {
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M6 1 L11 6 L6 11 M1 6 L11 6" stroke="var(--paper)" strokeWidth="0.9" fill="none" />
                 </svg>
-                Coming Soon
+                Enter Portal
               </a>
             </div>
           </div>
