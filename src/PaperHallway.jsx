@@ -1470,6 +1470,7 @@ function AetherFeatureCard({ feature, index }) {
   );
 }
 
+/* ====================================================================
    MAIN APP
    ==================================================================== */
 export default function PaperHallway() {
