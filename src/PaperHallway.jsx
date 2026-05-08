@@ -629,7 +629,7 @@ function SyntheseShowcase() {
             {/* CTA */}
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <a
-                href="/portal"
+                href="https://synthese.paperhallway.com/dashboard"
                 className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500 hover:shadow-lg"
                 style={{
                   fontFamily: "var(--font-body)",
@@ -647,7 +647,7 @@ function SyntheseShowcase() {
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M6 1 L11 6 L6 11 M1 6 L11 6" stroke="var(--paper)" strokeWidth="0.9" fill="none" />
                 </svg>
-                Enter Portal
+                ENTER PORTAL
               </a>
             </div>
           </div>
