@@ -560,7 +560,7 @@ function AetherShowcase({ onNavigate }) {
   );
 }
 
-function SwissFlowShowcase() {
+function SyntheseShowcase() {
   const [ref, visible] = useInView(0.15);
   const [hovered, setHovered] = useState(false);
 
@@ -628,7 +628,7 @@ function SwissFlowShowcase() {
               className="text-4xl sm:text-5xl mb-3"
               style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.1 }}
             >
-              SwissFlow
+              Synthese
             </h2>
 
             <p
@@ -745,7 +745,7 @@ function CollectionSection({ onNavigate }) {
         {/* App showcase cards */}
         <div className="flex flex-col gap-10 sm:gap-14">
           <AetherShowcase onNavigate={onNavigate} />
-          <SwissFlowShowcase />
+          <SyntheseShowcase />
         </div>
       </div>
     </section>
