@@ -33,7 +33,15 @@ export default async function handler(req, res) {
     const draft = drafts[0];
 
     // Build Telegram message with inline keyboard
-    const platformLabel = draft.platform === 'both' ? 'X + LinkedIn' : draft.platform === 'x' ? 'X (Twitter)' : 'LinkedIn';
+    const platformLabels = {
+      'x': 'X (Twitter)',
+      'linkedin': 'LinkedIn',
+      'instagram': 'Instagram',
+      'both': 'X + LinkedIn',
+      'x+instagram': 'X + Instagram',
+      'all': 'X + LinkedIn + Instagram'
+    };
+    const platformLabel = platformLabels[draft.platform] || draft.platform;
     const scheduledLabel = draft.scheduled_for
       ? new Date(draft.scheduled_for).toLocaleString('en-US', { timeZone: 'UTC' })
       : 'Not scheduled';

@@ -136,6 +136,125 @@ async function postToLinkedIn(text) {
   throw new Error(`LinkedIn API error (${response.status}): ${result}`);
 }
 
+// ─── Generate Branded Image for Instagram ──────────────────────────────────────
+
+async function generateBrandedImage(text) {
+  // Create an SVG with the post text on a branded background
+  // Then convert to a hosted image URL using a public SVG-to-PNG service
+  
+  // Truncate text for image (Instagram images shouldn't have too much text)
+  const displayText = text.length > 280 ? text.substring(0, 277) + '...' : text;
+  
+  // Split text into lines (max ~40 chars per line for readability)
+  const words = displayText.split(' ');
+  const lines = [];
+  let currentLine = '';
+  for (const word of words) {
+    if ((currentLine + ' ' + word).trim().length > 42) {
+      lines.push(currentLine.trim());
+      currentLine = word;
+    } else {
+      currentLine = currentLine ? currentLine + ' ' + word : word;
+    }
+  }
+  if (currentLine.trim()) lines.push(currentLine.trim());
+
+  // Build SVG text elements
+  const lineHeight = 38;
+  const startY = 540 - (lines.length * lineHeight) / 2;
+  const textElements = lines
+    .map((line, i) => {
+      const escapedLine = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      return `<text x="540" y="${startY + i * lineHeight}" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#3d3929">${escapedLine}</text>`;
+    })
+    .join('\n    ');
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <rect width="1080" height="1080" fill="#f8f6f1"/>
+  <rect x="60" y="60" width="960" height="960" fill="none" stroke="#e8e4dc" stroke-width="1"/>
+  <text x="540" y="140" text-anchor="middle" font-family="'Helvetica Neue', sans-serif" font-size="14" fill="#8a8070" letter-spacing="3">PAPER HALLWAY</text>
+  <line x1="510" y1="160" x2="570" y2="160" stroke="#c4b99a" stroke-width="1"/>
+  <text x="540" y="200" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#8a8070" font-style="italic">Synthese · The Executive Content Engine</text>
+  <g>
+    ${textElements}
+  </g>
+  <text x="540" y="980" text-anchor="middle" font-family="'Helvetica Neue', sans-serif" font-size="12" fill="#b0a890">paperhallway.com/synthese</text>
+</svg>`;
+
+  // Encode SVG as data URI and use a conversion service
+  const svgBase64 = Buffer.from(svg).toString('base64');
+  const svgDataUri = `data:image/svg+xml;base64,${svgBase64}`;
+  
+  // Use the SVG directly as the image URL for Instagram
+  // Instagram requires a publicly accessible image URL, so we'll upload to Supabase Storage
+  const fileName = `instagram-${Date.now()}.svg`;
+  
+  const { data: uploadData, error: uploadError } = await supabase.storage
+    .from('instagram-images')
+    .upload(fileName, Buffer.from(svg), {
+      contentType: 'image/svg+xml',
+      upsert: true
+    });
+
+  if (uploadError) {
+    // Fallback: try PNG generation via external service
+    console.error('Storage upload failed:', uploadError);
+    throw new Error(`Image upload failed: ${uploadError.message}`);
+  }
+
+  const { data: urlData } = supabase.storage
+    .from('instagram-images')
+    .getPublicUrl(fileName);
+
+  return urlData.publicUrl;
+}
+
+// ─── Post to Instagram via Graph API ────────────────────────────────────────────
+
+async function postToInstagram(text, imageUrl) {
+  const igUserId = process.env.INSTAGRAM_USER_ID;
+  const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
+
+  if (!igUserId || !accessToken) {
+    throw new Error('Instagram credentials not configured (INSTAGRAM_USER_ID, INSTAGRAM_ACCESS_TOKEN)');
+  }
+
+  // Step 1: Create a media container
+  const createUrl = `https://graph.facebook.com/v19.0/${igUserId}/media`;
+  const createResponse = await fetch(createUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      image_url: imageUrl,
+      caption: text,
+      access_token: accessToken
+    })
+  });
+
+  const createResult = await createResponse.json();
+  if (!createResponse.ok || !createResult.id) {
+    throw new Error(`Instagram create media error: ${JSON.stringify(createResult)}`);
+  }
+
+  // Step 2: Publish the container
+  const publishUrl = `https://graph.facebook.com/v19.0/${igUserId}/media_publish`;
+  const publishResponse = await fetch(publishUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      creation_id: createResult.id,
+      access_token: accessToken
+    })
+  });
+
+  const publishResult = await publishResponse.json();
+  if (!publishResponse.ok || !publishResult.id) {
+    throw new Error(`Instagram publish error: ${JSON.stringify(publishResult)}`);
+  }
+
+  return { success: true, id: publishResult.id };
+}
+
 // ─── Send Telegram Confirmation ─────────────────────────────────────────────────
 
 async function sendTelegramConfirmation(message) {
@@ -219,11 +338,20 @@ export default async function handler(req, res) {
 
     // ─── APPROVE ──────────────────────────────────────────────────────────────────
     if (action === 'approve') {
-      const results = { x: null, linkedin: null };
+      const results = { x: null, linkedin: null, instagram: null };
       const errors = [];
 
+      // Determine which platforms to post to
+      const platforms = item.platform === 'all'
+        ? ['x', 'linkedin', 'instagram']
+        : item.platform === 'both'
+          ? ['x', 'linkedin']
+          : item.platform === 'x+instagram'
+            ? ['x', 'instagram']
+            : [item.platform];
+
       // Post to X
-      if (item.platform === 'x' || item.platform === 'both') {
+      if (platforms.includes('x')) {
         try {
           results.x = await postToX(item.content_text);
         } catch (err) {
@@ -232,7 +360,7 @@ export default async function handler(req, res) {
       }
 
       // Post to LinkedIn
-      if (item.platform === 'linkedin' || item.platform === 'both') {
+      if (platforms.includes('linkedin')) {
         try {
           results.linkedin = await postToLinkedIn(item.content_text);
         } catch (err) {
@@ -240,15 +368,24 @@ export default async function handler(req, res) {
         }
       }
 
+      // Post to Instagram (requires image generation)
+      if (platforms.includes('instagram')) {
+        try {
+          const imageUrl = await generateBrandedImage(item.content_text);
+          results.instagram = await postToInstagram(item.content_text, imageUrl);
+        } catch (err) {
+          errors.push(`Instagram: ${err.message}`);
+        }
+      }
+
       // If all platforms failed, don't mark as published
-      const platformCount = item.platform === 'both' ? 2 : 1;
-      if (errors.length === platformCount) {
+      if (errors.length === platforms.length) {
         await sendTelegramConfirmation(
           `⚠️ *Publishing Failed*\n\nDraft: "${item.content_text.substring(0, 80)}..."\n\nErrors:\n${errors.join('\n')}`
         );
         return res.status(500).send(htmlResponse(
           'Publishing Failed',
-          `Could not publish to ${item.platform}. Errors: ${errors.join('; ')}`,
+          `Could not publish. Errors: ${errors.join('; ')}`,
           false
         ));
       }
@@ -270,6 +407,7 @@ export default async function handler(req, res) {
       const successPlatforms = [];
       if (results.x) successPlatforms.push('X (Twitter)');
       if (results.linkedin) successPlatforms.push('LinkedIn');
+      if (results.instagram) successPlatforms.push('Instagram');
 
       let telegramMsg = `✅ *Published Successfully*\n\n`;
       telegramMsg += `*Platforms:* ${successPlatforms.join(', ')}\n`;
@@ -282,7 +420,7 @@ export default async function handler(req, res) {
 
       const displayMsg = errors.length > 0
         ? `Published to ${successPlatforms.join(', ')}. Some platforms had errors: ${errors.join('; ')}`
-        : `Successfully published to ${successPlatforms.join(' and ')}.`;
+        : `Successfully published to ${successPlatforms.join(', ')}.`;
 
       res.setHeader('Content-Type', 'text/html');
       return res.status(200).send(htmlResponse('Published!', displayMsg, true));

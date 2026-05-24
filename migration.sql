@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS content_queue (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   content_text TEXT NOT NULL,
-  platform TEXT NOT NULL CHECK (platform IN ('x', 'linkedin', 'both')),
+  platform TEXT NOT NULL CHECK (platform IN ('x', 'linkedin', 'instagram', 'both', 'x+instagram', 'all')),
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'published', 'rejected')),
   scheduled_for TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -30,3 +30,6 @@ CREATE INDEX idx_content_queue_pending_scheduled
 -- Index for token lookups
 CREATE INDEX idx_content_queue_approval_token
   ON content_queue (approval_token);
+
+-- Create storage bucket for Instagram images (run separately if needed)
+-- INSERT INTO storage.buckets (id, name, public) VALUES ('instagram-images', 'instagram-images', true);
