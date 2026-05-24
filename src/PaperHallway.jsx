@@ -1678,7 +1678,7 @@ function SynthesePage({ onBack }) {
             }}
           >
             <a
-              href="#subscribe"
+              href="https://buy.stripe.com/cNi8wI9hoazE19XbVj8Vi01"
               className="inline-flex items-center gap-3 px-10 py-4 transition-all duration-500 hover:shadow-lg"
               style={{
                 fontFamily: "var(--font-body)",
@@ -1790,7 +1790,7 @@ function SynthesePage({ onBack }) {
 
           <div className="flex flex-col items-center gap-5">
             <a
-              href="#subscribe"
+              href="https://buy.stripe.com/cNi8wI9hoazE19XbVj8Vi01"
               className="inline-flex items-center gap-3 px-10 py-4 transition-all duration-500 hover:shadow-lg"
               style={{
                 fontFamily: "var(--font-body)",
