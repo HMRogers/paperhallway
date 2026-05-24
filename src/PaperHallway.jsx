@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { supabase } from "./lib/supabase";
+import { supabase, isSupabaseConfigured } from "./lib/supabase";
 import AuthPage from "./components/AuthPage";
 import Dashboard from "./components/Dashboard";
 
@@ -1942,6 +1942,11 @@ export default function PaperHallway() {
 
   // Initialize auth session
   useEffect(() => {
+    if (!isSupabaseConfigured()) {
+      setAuthLoading(false);
+      return;
+    }
+
     supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s);
       if (s?.user?.email) {
@@ -1965,6 +1970,10 @@ export default function PaperHallway() {
   }, []);
 
   const checkSubscription = async (email) => {
+    if (!isSupabaseConfigured()) {
+      setAuthLoading(false);
+      return;
+    }
     try {
       const { data: profile } = await supabase
         .from("profiles")
