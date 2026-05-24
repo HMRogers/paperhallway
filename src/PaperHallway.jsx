@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import { supabase } from "./lib/supabase";
+import AuthPage from "./components/AuthPage";
+import Dashboard from "./components/Dashboard";
 
 /*
   PAPER HALLWAY — "The Digital Storefront"
@@ -629,7 +632,7 @@ function SyntheseShowcase({ onNavigate }) {
             {/* CTA */}
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <a
-                href="https://synthese.paperhallway.com/dashboard"
+                href="/login"
                 className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500 hover:shadow-lg"
                 style={{
                   fontFamily: "var(--font-body)",
@@ -1920,15 +1923,80 @@ function AetherFeatureCard({ feature, index }) {
    MAIN APP
    ==================================================================== */
 export default function PaperHallway() {
+  // Auth state
+  const [session, setSession] = useState(null);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+
   // Determine initial view from URL pathname
   const getViewFromPath = () => {
     const path = window.location.pathname;
+    if (path === "/login") return "login";
+    if (path === "/dashboard") return "dashboard";
     if (path === "/about-synthese") return "synthese";
     if (path === "/about-aether" || path === "/aether") return "aether";
     return "hallway";
   };
 
   const [currentView, setCurrentView] = useState(getViewFromPath);
+
+  // Initialize auth session
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session: s } }) => {
+      setSession(s);
+      if (s?.user?.email) {
+        checkSubscription(s.user.email);
+      } else {
+        setAuthLoading(false);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+      setSession(s);
+      if (s?.user?.email) {
+        checkSubscription(s.user.email);
+      } else {
+        setIsSubscribed(false);
+        setAuthLoading(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const checkSubscription = async (email) => {
+    try {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_subscribed")
+        .eq("email", email)
+        .single();
+      setIsSubscribed(profile?.is_subscribed || false);
+    } catch {
+      setIsSubscribed(false);
+    }
+    setAuthLoading(false);
+  };
+
+  // Route protection: redirect logic after auth loads
+  useEffect(() => {
+    if (authLoading) return;
+    const path = window.location.pathname;
+
+    if (path === "/dashboard") {
+      if (!session) {
+        // Not logged in → redirect to /login
+        window.history.replaceState({}, "", "/login");
+        setCurrentView("login");
+      } else if (!isSubscribed) {
+        // Logged in but not subscribed → redirect to /about-synthese
+        window.history.replaceState({}, "", "/about-synthese");
+        setCurrentView("synthese");
+      } else {
+        setCurrentView("dashboard");
+      }
+    }
+  }, [authLoading, session, isSubscribed]);
 
   // Listen for popstate (browser back/forward)
   useEffect(() => {
@@ -1941,13 +2009,31 @@ export default function PaperHallway() {
     setCurrentView(view);
     window.scrollTo(0, 0);
     // Push URL state
-    if (view === "synthese") {
+    if (view === "login") {
+      window.history.pushState({}, "", "/login");
+    } else if (view === "dashboard") {
+      window.history.pushState({}, "", "/dashboard");
+    } else if (view === "synthese") {
       window.history.pushState({}, "", "/about-synthese");
     } else if (view === "aether") {
       window.history.pushState({}, "", "/about-aether");
     } else {
       window.history.pushState({}, "", "/");
     }
+  };
+
+  const handleAuthSuccess = (destination) => {
+    if (destination === "dashboard") {
+      handleNavigate("dashboard");
+    } else {
+      handleNavigate("synthese");
+    }
+  };
+
+  const handleLogout = () => {
+    setSession(null);
+    setIsSubscribed(false);
+    handleNavigate("hallway");
   };
 
   return (
@@ -2018,7 +2104,9 @@ export default function PaperHallway() {
       `}</style>
 
       <div className="paper-texture" style={{ background: "var(--paper)", minHeight: "100vh" }}>
-        <Nav onNavigate={handleNavigate} currentView={currentView} />
+        {currentView !== "login" && currentView !== "dashboard" && (
+          <Nav onNavigate={handleNavigate} currentView={currentView} />
+        )}
 
         {currentView === "hallway" && (
           <>
@@ -2038,6 +2126,13 @@ export default function PaperHallway() {
           <SynthesePage onBack={() => handleNavigate("hallway")} />
         )}
 
+        {currentView === "login" && (
+          <AuthPage onAuthSuccess={handleAuthSuccess} />
+        )}
+
+        {currentView === "dashboard" && session && isSubscribed && (
+          <Dashboard userEmail={session.user.email} onLogout={handleLogout} />
+        )}
       </div>
     </>
   );

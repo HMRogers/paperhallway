@@ -4,7 +4,8 @@
     { "source": "/activate", "destination": "/activate.html" },
     { "source": "/download/(.*)", "destination": "/download/$1" },
     { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/dashboard", "destination": "/index.html" },
     { "source": "/setup", "destination": "/setup.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
