@@ -368,13 +368,17 @@ export default async function handler(req, res) {
         }
       }
 
-      // Post to Instagram (requires image generation)
+      // Instagram: generate branded image and send via Telegram for manual posting
       if (platforms.includes('instagram')) {
         try {
           const imageUrl = await generateBrandedImage(item.content_text);
-          results.instagram = await postToInstagram(item.content_text, imageUrl);
+          results.instagram = { manual: true, imageUrl };
+          // Send image link to Telegram for manual Instagram posting
+          await sendTelegramConfirmation(
+            `🖼️ *Instagram Image Ready*\n\nBranded image: ${imageUrl}\n\n_Caption:_ ${item.content_text.substring(0, 200)}${item.content_text.length > 200 ? '...' : ''}\n\n_Save and post to Instagram manually._`
+          );
         } catch (err) {
-          errors.push(`Instagram: ${err.message}`);
+          errors.push(`Instagram image: ${err.message}`);
         }
       }
 
@@ -407,7 +411,7 @@ export default async function handler(req, res) {
       const successPlatforms = [];
       if (results.x) successPlatforms.push('X (Twitter)');
       if (results.linkedin) successPlatforms.push('LinkedIn');
-      if (results.instagram) successPlatforms.push('Instagram');
+      if (results.instagram) successPlatforms.push('Instagram (image sent)');
 
       let telegramMsg = `✅ *Published Successfully*\n\n`;
       telegramMsg += `*Platforms:* ${successPlatforms.join(', ')}\n`;
