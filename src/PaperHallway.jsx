@@ -1701,7 +1701,7 @@ function SynthesePage({ onBack }) {
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <a
-                href="#sample"
+                href="/sample" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/sample'); window.dispatchEvent(new PopStateEvent('popstate')); }}
                 className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
                 style={{
                   fontFamily: "var(--font-body)",
@@ -1812,7 +1812,7 @@ function SynthesePage({ onBack }) {
             </a>
 
             <a
-              href="#sample"
+              href="/sample" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/sample'); window.dispatchEvent(new PopStateEvent('popstate')); }}
               className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
               style={{
                 fontFamily: "var(--font-body)",
@@ -1935,6 +1935,7 @@ export default function PaperHallway() {
     if (path === "/dashboard") return "dashboard";
     if (path === "/about-synthese") return "synthese";
     if (path === "/about-aether" || path === "/aether") return "aether";
+    if (path === "/sample") return "sample";
     return "hallway";
   };
 
@@ -2026,6 +2027,8 @@ export default function PaperHallway() {
       window.history.pushState({}, "", "/about-synthese");
     } else if (view === "aether") {
       window.history.pushState({}, "", "/about-aether");
+    } else if (view === "sample") {
+      window.history.pushState({}, "", "/sample");
     } else {
       window.history.pushState({}, "", "/");
     }
@@ -2142,7 +2145,187 @@ export default function PaperHallway() {
         {currentView === "dashboard" && session && isSubscribed && (
           <Dashboard userEmail={session.user.email} onLogout={handleLogout} />
         )}
+
+        {currentView === "sample" && (
+          <SamplePage onBack={() => handleNavigate("synthese")} />
+        )}
       </div>
     </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SAMPLE OUTPUT PAGE
+   ═══════════════════════════════════════════════════════════════════ */
+function SamplePage({ onBack }) {
+  return (
+    <div style={{ minHeight: "100vh", background: "var(--paper)", padding: "80px 24px" }}>
+      {/* Back link */}
+      <div style={{ maxWidth: "1100px", margin: "0 auto 40px" }}>
+        <button
+          onClick={onBack}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontFamily: "var(--font-body)",
+            fontSize: "12px",
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "var(--ink-muted)",
+          }}
+        >
+          &larr; Back to Synthese
+        </button>
+      </div>
+
+      {/* Header */}
+      <div style={{ textAlign: "center", maxWidth: "700px", margin: "0 auto 60px" }}>
+        <p style={{
+          fontFamily: "var(--font-body)",
+          fontSize: "11px",
+          letterSpacing: "0.25em",
+          textTransform: "uppercase",
+          color: "var(--ink-muted)",
+          marginBottom: "16px",
+        }}>
+          Sample Transformation
+        </p>
+        <h1 style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(32px, 5vw, 48px)",
+          fontWeight: 400,
+          fontStyle: "italic",
+          color: "var(--ink)",
+          lineHeight: 1.2,
+          margin: 0,
+        }}>
+          From Raw to Refined.
+        </h1>
+      </div>
+
+      {/* Before / After Grid */}
+      <div style={{
+        maxWidth: "1100px",
+        margin: "0 auto",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "48px",
+      }} className="sample-grid">
+        {/* LEFT — Before */}
+        <div style={{
+          padding: "40px",
+          border: "1px solid var(--border)",
+          borderRadius: "2px",
+        }}>
+          <p style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "10px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "var(--ink-muted)",
+            marginBottom: "8px",
+          }}>
+            Before
+          </p>
+          <h3 style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "22px",
+            fontWeight: 400,
+            fontStyle: "italic",
+            color: "var(--ink)",
+            marginBottom: "24px",
+          }}>
+            Raw Voice Memo (3 Minutes)
+          </h3>
+          <p style={{
+            fontFamily: "'Courier New', Courier, monospace",
+            fontSize: "14px",
+            lineHeight: 1.8,
+            color: "rgba(60, 55, 48, 0.6)",
+            whiteSpace: "pre-wrap",
+          }}>
+            Look, I think a lot of founders get this wrong. They try to control the narrative too much. They want everyone to think everything is perfect, but people see right through it. You end up chasing likes instead of actually leading. If you can&apos;t be honest with yourself about what&apos;s broken in your company, you can&apos;t expect your team to trust you. You have to look in the mirror first.
+          </p>
+        </div>
+
+        {/* RIGHT — After */}
+        <div style={{
+          padding: "40px",
+          border: "1px solid var(--border)",
+          borderRadius: "2px",
+          background: "var(--paper-warm)",
+        }}>
+          <p style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "10px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "var(--ink-muted)",
+            marginBottom: "8px",
+          }}>
+            After
+          </p>
+          <h3 style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "22px",
+            fontWeight: 400,
+            fontStyle: "italic",
+            color: "var(--ink)",
+            marginBottom: "24px",
+          }}>
+            Synthese Output (60 Seconds Later)
+          </h3>
+          <div style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "15px",
+            lineHeight: 1.9,
+            color: "var(--ink)",
+          }}>
+            <p style={{ marginBottom: "16px", fontStyle: "italic", fontWeight: 500 }}>
+              True connection often arises from uncomfortable truths, not convenient narratives. The illusion of control can be our most significant blind spot.
+            </p>
+            <p style={{ marginBottom: "16px" }}>
+              We frequently seek external validation, projecting our desires onto others. This search for self in external reflections rarely yields genuine insight.
+            </p>
+            <p style={{ marginBottom: "16px" }}>
+              Authentic leadership demands confronting difficult realities. It requires acknowledging our impact, even when unintended. The most profound growth occurs when we cease deflecting and begin introspecting. Understanding our own patterns is the first step toward meaningful change.
+            </p>
+            <p style={{ marginBottom: 0 }}>
+              Perhaps the most challenging leadership act is to truly see ourselves, unvarnished.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ textAlign: "center", marginTop: "60px" }}>
+        <a
+          href="https://buy.stripe.com/cNi8wI9hoazE19XbVj8Vi01"
+          className="inline-flex items-center gap-3 px-10 py-4 transition-all duration-500 hover:shadow-lg"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "12px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            background: "var(--ink)",
+            color: "var(--paper)",
+            textDecoration: "none",
+            display: "inline-block",
+          }}
+        >
+          Subscribe &mdash; 500 CHF
+        </a>
+      </div>
+
+      {/* Responsive style for mobile stacking */}
+      <style>{`
+        @media (max-width: 768px) {
+          .sample-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
+    </div>
   );
 }
