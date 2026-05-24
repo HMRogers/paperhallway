@@ -541,7 +541,7 @@ function AetherShowcase({ onNavigate }) {
   );
 }
 
-function SyntheseShowcase() {
+function SyntheseShowcase({ onNavigate }) {
   const [ref, visible] = useInView(0.15);
   const [hovered, setHovered] = useState(false);
 
@@ -681,17 +681,28 @@ function SyntheseShowcase() {
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Learn more link */}
         <div
-          className="px-6 sm:px-10 py-5"
+          className="px-6 sm:px-10 py-5 flex items-center justify-between"
           style={{ borderTop: "1px solid var(--border)" }}
         >
-          <span
-            className="text-xs"
-            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.1em" }}
+          <button
+            onClick={() => onNavigate("synthese")}
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest transition-colors duration-300"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--ink-light)",
+              letterSpacing: "0.2em",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "11px",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-light)")}
           >
-            Autonomous &middot; Privacy-first &middot; Built for executives
-          </span>
+            Learn more about Synthese &rarr;
+          </button>
         </div>
       </div>
     </div>
@@ -726,7 +737,7 @@ function CollectionSection({ onNavigate }) {
         {/* App showcase cards */}
         <div className="flex flex-col gap-10 sm:gap-14">
           <AetherShowcase onNavigate={onNavigate} />
-          <SyntheseShowcase />
+          <SyntheseShowcase onNavigate={onNavigate} />
         </div>
       </div>
     </section>
@@ -1406,6 +1417,460 @@ function AetherPage({ onBack }) {
   );
 }
 
+/* ====================================================================
+   SYNTHESE PRODUCT PAGE
+   ==================================================================== */
+
+const SYNTHESE_FEATURES = [
+  {
+    title: "Executive-Grade Copy",
+    description: "No robotic AI tone. Our engine is fine-tuned to preserve your authentic voice, cadence, and unique leadership insights perfectly.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <circle cx="24" cy="24" r="18" />
+        <circle cx="24" cy="24" r="12" />
+        <circle cx="24" cy="24" r="6" />
+        <circle cx="24" cy="24" r="2" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    title: "One Video, Thirty Days",
+    description: "Turn a single 3-minute brain dump into a comprehensive monthly content calendar of LinkedIn posts, articles, and newsletters.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <rect x="6" y="10" width="36" height="32" rx="2" />
+        <line x1="6" y1="18" x2="42" y2="18" />
+        <line x1="14" y1="10" x2="14" y2="14" />
+        <line x1="34" y1="10" x2="34" y2="14" />
+        <rect x="12" y="22" width="6" height="5" rx="0.5" />
+        <rect x="21" y="22" width="6" height="5" rx="0.5" />
+        <rect x="30" y="22" width="6" height="5" rx="0.5" />
+        <rect x="12" y="30" width="6" height="5" rx="0.5" />
+        <rect x="21" y="30" width="6" height="5" rx="0.5" />
+        <rect x="30" y="30" width="6" height="5" rx="0.5" />
+      </svg>
+    ),
+  },
+  {
+    title: "Autonomous Pipeline",
+    description: "Upload a raw, unedited video or voice memo. Synthese handles the transcription, extraction, and formatting automatically.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <path d="M24 6 L24 42" />
+        <path d="M24 6 L30 12" />
+        <path d="M24 6 L18 12" />
+        <path d="M12 24 L36 24" />
+        <circle cx="12" cy="24" r="4" />
+        <circle cx="36" cy="24" r="4" />
+        <path d="M18 36 L30 36" />
+        <path d="M30 36 L26 32" />
+        <path d="M30 36 L26 40" />
+      </svg>
+    ),
+  },
+  {
+    title: "Frictionless Workflow",
+    description: "Zero complex prompts, zero menus, and zero agency back-and-forth. Just drop your file into the portal and walk away.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <line x1="10" y1="14" x2="38" y2="14" />
+        <line x1="10" y1="24" x2="38" y2="24" />
+        <line x1="10" y1="34" x2="38" y2="34" />
+        <circle cx="20" cy="14" r="3" fill="var(--paper)" />
+        <circle cx="30" cy="24" r="3" fill="var(--paper)" />
+        <circle cx="16" cy="34" r="3" fill="var(--paper)" />
+      </svg>
+    ),
+  },
+  {
+    title: "Multi-Format Export",
+    description: "Download your polished assets instantly in clean Markdown or copy them directly to your clipboard, ready to be published.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <path d="M12 6 L30 6 L36 12 L36 42 L12 42 Z" />
+        <path d="M30 6 L30 12 L36 12" />
+        <line x1="18" y1="20" x2="30" y2="20" />
+        <line x1="18" y1="26" x2="30" y2="26" />
+        <line x1="18" y1="32" x2="26" y2="32" />
+        <path d="M32 30 L40 30 L40 46 L16 46 L16 42" strokeDasharray="2 2" />
+      </svg>
+    ),
+  },
+  {
+    title: "Enterprise Privacy",
+    description: "Your strategic insights remain strictly confidential. Built to strict Swiss data privacy standards, your uploads are never used to train public models.",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="0.8" className="w-10 h-10">
+        <path d="M24 6 L38 14 L38 28 C38 36 30 42 24 44 C18 42 10 36 10 28 L10 14 Z" />
+        <rect x="18" y="22" width="12" height="10" rx="1" />
+        <path d="M20 22 L20 18 C20 15 22 13 24 13 C26 13 28 15 28 18 L28 22" />
+        <circle cx="24" cy="27" r="1.5" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+];
+
+function SyntheseFeatureCard({ feature, index }) {
+  const [ref, visible] = useInView(0.2);
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(40px)",
+        transition: `all 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${index * 0.1}s`,
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div
+        className="p-6 sm:p-8 transition-all duration-500"
+        style={{
+          border: "1px solid var(--border)",
+          background: hovered ? "var(--paper-warm)" : "var(--paper)",
+          transform: hovered ? "translateY(-4px)" : "translateY(0)",
+          boxShadow: hovered ? "0 12px 40px rgba(60,55,48,0.06)" : "none",
+        }}
+      >
+        <div className="mb-6" style={{ color: "var(--ink-light)" }}>
+          {feature.icon}
+        </div>
+        <h3
+          className="text-lg mb-3"
+          style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400 }}
+        >
+          {feature.title}
+        </h3>
+        <p
+          className="text-sm leading-relaxed"
+          style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+        >
+          {feature.description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function SynthesePage({ onBack }) {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const t = setTimeout(() => setLoaded(true), 100);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div style={{ background: "var(--paper)", minHeight: "100vh" }}>
+      {/* Hero */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6">
+        {/* Subtle radial grid */}
+        <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.03 }}>
+          <svg className="w-full h-full" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+            <circle cx="400" cy="400" r="100" fill="none" stroke="var(--ink)" strokeWidth="0.3" />
+            <circle cx="400" cy="400" r="200" fill="none" stroke="var(--ink)" strokeWidth="0.3" />
+            <circle cx="400" cy="400" r="300" fill="none" stroke="var(--ink)" strokeWidth="0.3" />
+            <circle cx="400" cy="400" r="400" fill="none" stroke="var(--ink)" strokeWidth="0.3" />
+            <line x1="400" y1="0" x2="400" y2="800" stroke="var(--ink)" strokeWidth="0.3" />
+            <line x1="0" y1="400" x2="800" y2="400" stroke="var(--ink)" strokeWidth="0.3" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 text-center max-w-3xl">
+          {/* Synthese icon */}
+          <div
+            className="mx-auto mb-8"
+            style={{
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 0.2s",
+            }}
+          >
+            <svg viewBox="0 0 64 64" className="w-16 h-16 mx-auto" fill="none" stroke="var(--ink)" strokeWidth="0.6">
+              <rect x="6" y="10" width="52" height="36" rx="2" />
+              <line x1="6" y1="20" x2="58" y2="20" />
+              <line x1="20" y1="10" x2="20" y2="46" />
+              <line x1="26" y1="28" x2="50" y2="28" />
+              <line x1="26" y1="34" x2="44" y2="34" />
+              <line x1="26" y1="40" x2="38" y2="40" />
+              <path d="M32 50 L32 56 M22 56 L42 56" />
+            </svg>
+          </div>
+
+          {/* Breadcrumb */}
+          <div
+            className="overflow-hidden mb-6"
+            style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.8s ease 0.3s" }}
+          >
+            <p
+              className="text-xs uppercase tracking-widest"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em" }}
+            >
+              <a
+                href="#"
+                onClick={(e) => { e.preventDefault(); onBack(); }}
+                className="transition-colors duration-300"
+                style={{ color: "var(--ink-faint)", textDecoration: "none" }}
+                onMouseEnter={(e) => (e.target.style.color = "var(--ink)")}
+                onMouseLeave={(e) => (e.target.style.color = "var(--ink-faint)")}
+              >
+                Content Engine
+              </a>
+              {" "}/ Synthese
+            </p>
+          </div>
+
+          {/* Title */}
+          <div className="overflow-hidden">
+            <h1
+              className="text-5xl sm:text-7xl md:text-8xl leading-none"
+              style={{
+                fontFamily: "var(--font-heading)",
+                color: "var(--ink)",
+                fontWeight: 400,
+                fontStyle: "italic",
+                opacity: loaded ? 1 : 0,
+                transform: loaded ? "translateY(0)" : "translateY(40px)",
+                transition: "all 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s",
+              }}
+            >
+              Authenticity at Scale.
+            </h1>
+          </div>
+
+          {/* Tagline divider */}
+          <div
+            className="mx-auto mt-8 mb-6"
+            style={{
+              width: loaded ? "80px" : "0px",
+              height: "1px",
+              background: "var(--ink)",
+              opacity: 0.2,
+              transition: "width 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.8s",
+            }}
+          />
+
+          {/* Sub-headline */}
+          <p
+            className="text-sm sm:text-base mt-3 leading-relaxed max-w-lg mx-auto"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--ink-light)",
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 1.1s",
+            }}
+          >
+            The autonomous AI pipeline for the C-suite. Synthese extracts your exact tone, cadence, and insights, transforming a single raw video into thirty days of premium text assets. Zero friction. Zero compromise.
+          </p>
+
+          {/* CTA */}
+          <div
+            className="mt-12 flex flex-col items-center gap-6"
+            style={{
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 1.3s",
+            }}
+          >
+            <a
+              href="#subscribe"
+              className="inline-flex items-center gap-3 px-10 py-4 transition-all duration-500 hover:shadow-lg"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "12px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "var(--ink)",
+                color: "var(--paper)",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              Subscribe &mdash; 500 CHF
+            </a>
+
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <a
+                href="#sample"
+                className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "11px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  background: "transparent",
+                  color: "var(--ink)",
+                  border: "1px solid var(--border)",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                View Sample Output
+              </a>
+            </div>
+
+            <p
+              className="text-xs mt-1"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
+            >
+              Beta tier available &middot; Cancel anytime
+            </p>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div
+          className="absolute bottom-12"
+          style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s ease 1.8s" }}
+        >
+          <svg width="16" height="24" viewBox="0 0 16 24" fill="none" className="animate-gentle-bounce">
+            <rect x="5.5" y="0.5" width="5" height="10" rx="2.5" stroke="var(--ink-faint)" strokeWidth="0.8" />
+            <line x1="8" y1="3" x2="8" y2="5" stroke="var(--ink-faint)" strokeWidth="0.8" strokeLinecap="round" />
+            <path d="M3 16 L8 21 L13 16" stroke="var(--ink-faint)" strokeWidth="0.8" fill="none" />
+          </svg>
+        </div>
+      </section>
+
+      {/* What It Does */}
+      <section className="px-6 sm:px-10 py-24 sm:py-36">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center gap-6 mb-16">
+            <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
+            <span
+              className="text-xs uppercase tracking-widest"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+            >
+              What it does
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+            {SYNTHESE_FEATURES.map((feature, i) => (
+              <SyntheseFeatureCard key={i} feature={feature} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="px-6 sm:px-10 py-24 sm:py-36">
+        <div className="max-w-2xl mx-auto text-center">
+          <svg viewBox="0 0 64 64" className="w-12 h-12 mx-auto mb-8" fill="none" stroke="var(--ink)" strokeWidth="0.6" style={{ opacity: 0.2 }}>
+            <rect x="6" y="10" width="52" height="36" rx="2" />
+            <line x1="6" y1="20" x2="58" y2="20" />
+            <line x1="20" y1="10" x2="20" y2="46" />
+            <line x1="26" y1="28" x2="50" y2="28" />
+            <line x1="26" y1="34" x2="44" y2="34" />
+            <line x1="26" y1="40" x2="38" y2="40" />
+            <path d="M32 50 L32 56 M22 56 L42 56" />
+          </svg>
+
+          <h2
+            className="text-3xl sm:text-5xl mb-4"
+            style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, lineHeight: 1.15 }}
+          >
+            Ready to reclaim your time?
+          </h2>
+
+          <p
+            className="text-sm sm:text-base mb-10 leading-relaxed"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", maxWidth: "400px", margin: "0 auto" }}
+          >
+            One raw video. Thirty days of premium, on-brand content. Subscribe today and let Synthese handle the rest.
+          </p>
+
+          <div className="flex flex-col items-center gap-5">
+            <a
+              href="#subscribe"
+              className="inline-flex items-center gap-3 px-10 py-4 transition-all duration-500 hover:shadow-lg"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "12px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "var(--ink)",
+                color: "var(--paper)",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              Subscribe &mdash; 500 CHF
+            </a>
+
+            <a
+              href="#sample"
+              className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "11px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                background: "transparent",
+                color: "var(--ink)",
+                border: "1px solid var(--border)",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
+            >
+              View Sample Output
+            </a>
+
+            <p
+              className="text-xs"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
+            >
+              Beta tier available &middot; Cancel anytime
+            </p>
+          </div>
+
+          {/* Back to hallway */}
+          <div className="mt-16 pt-8" style={{ borderTop: "1px solid var(--border)" }}>
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); onBack(); }}
+              className="inline-flex items-center gap-3 text-xs uppercase tracking-widest transition-colors duration-300"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", textDecoration: "none", letterSpacing: "0.2em" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-light)")}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M10 6 L2 6 M5 3 L2 6 L5 9" stroke="currentColor" strokeWidth="0.8" />
+              </svg>
+              Back to the Hallway
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <div
+        className="px-6 sm:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-7xl mx-auto"
+        style={{ borderTop: "1px solid var(--border)" }}
+      >
+        <span className="text-xs" style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.1em" }}>
+          &copy; {new Date().getFullYear()} Paper Hallway
+        </span>
+        <span className="text-xs" style={{ fontFamily: "var(--font-heading)", color: "var(--ink-faint)", fontStyle: "italic" }}>
+          paperhallway.com
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function AetherFeatureCard({ feature, index }) {
   const [ref, visible] = useInView(0.2);
   const [hovered, setHovered] = useState(false);
@@ -1455,11 +1920,34 @@ function AetherFeatureCard({ feature, index }) {
    MAIN APP
    ==================================================================== */
 export default function PaperHallway() {
-  const [currentView, setCurrentView] = useState("hallway");
+  // Determine initial view from URL pathname
+  const getViewFromPath = () => {
+    const path = window.location.pathname;
+    if (path === "/about-synthese") return "synthese";
+    if (path === "/about-aether" || path === "/aether") return "aether";
+    return "hallway";
+  };
+
+  const [currentView, setCurrentView] = useState(getViewFromPath);
+
+  // Listen for popstate (browser back/forward)
+  useEffect(() => {
+    const handlePop = () => setCurrentView(getViewFromPath());
+    window.addEventListener("popstate", handlePop);
+    return () => window.removeEventListener("popstate", handlePop);
+  }, []);
 
   const handleNavigate = (view) => {
     setCurrentView(view);
     window.scrollTo(0, 0);
+    // Push URL state
+    if (view === "synthese") {
+      window.history.pushState({}, "", "/about-synthese");
+    } else if (view === "aether") {
+      window.history.pushState({}, "", "/about-aether");
+    } else {
+      window.history.pushState({}, "", "/");
+    }
   };
 
   return (
@@ -1544,6 +2032,10 @@ export default function PaperHallway() {
 
         {currentView === "aether" && (
           <AetherPage onBack={() => handleNavigate("hallway")} />
+        )}
+
+        {currentView === "synthese" && (
+          <SynthesePage onBack={() => handleNavigate("hallway")} />
         )}
 
       </div>
