@@ -1681,7 +1681,7 @@ function SynthesePage({ onBack }) {
             }}
           >
             <a
-              href="https://buy.stripe.com/cNi8wI9hoazE19XbVj8Vi01"
+              href="/sample" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/sample'); window.dispatchEvent(new PopStateEvent('popstate')); }}
               className="inline-flex items-center gap-3 px-10 py-4 transition-all duration-500 hover:shadow-lg"
               style={{
                 fontFamily: "var(--font-body)",
@@ -1696,37 +1696,8 @@ function SynthesePage({ onBack }) {
               onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-1px)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
-              Subscribe &mdash; 500 CHF
+              View Sample Output
             </a>
-
-            <div className="flex flex-col sm:flex-row items-center gap-4">
-              <a
-                href="/sample" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/sample'); window.dispatchEvent(new PopStateEvent('popstate')); }}
-                className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: "11px",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  background: "transparent",
-                  color: "var(--ink)",
-                  border: "1px solid var(--border)",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
-              >
-                View Sample Output
-              </a>
-            </div>
-
-            <p
-              className="text-xs mt-1"
-              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
-            >
-              Beta tier available &middot; Cancel anytime
-            </p>
           </div>
         </div>
 
@@ -1810,33 +1781,6 @@ function SynthesePage({ onBack }) {
             >
               Subscribe &mdash; 500 CHF
             </a>
-
-            <a
-              href="/sample" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/sample'); window.dispatchEvent(new PopStateEvent('popstate')); }}
-              className="inline-flex items-center gap-3 px-8 py-3.5 transition-all duration-500"
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "11px",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                background: "transparent",
-                color: "var(--ink)",
-                border: "1px solid var(--border)",
-                textDecoration: "none",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
-            >
-              View Sample Output
-            </a>
-
-            <p
-              className="text-xs"
-              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.05em" }}
-            >
-              Beta tier available &middot; Cancel anytime
-            </p>
           </div>
 
           {/* Back to hallway */}
