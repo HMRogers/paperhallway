@@ -1920,6 +1920,305 @@ function AetherFeatureCard({ feature, index }) {
 }
 
 /* ====================================================================
+   SECURITY PAGE
+   ==================================================================== */
+function SecurityPage({ onBack }) {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const t = setTimeout(() => setLoaded(true), 100);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div style={{ background: "var(--paper)", minHeight: "100vh" }}>
+      {/* Hero */}
+      <section className="relative min-h-[70vh] flex flex-col items-center justify-center overflow-hidden px-6">
+        {/* Subtle radial grid */}
+        <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.03 }}>
+          <svg className="w-full h-full" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+            <circle cx="400" cy="400" r="100" fill="none" stroke="var(--ink)" strokeWidth="0.3" />
+            <circle cx="400" cy="400" r="200" fill="none" stroke="var(--ink)" strokeWidth="0.3" />
+            <circle cx="400" cy="400" r="300" fill="none" stroke="var(--ink)" strokeWidth="0.3" />
+            <circle cx="400" cy="400" r="400" fill="none" stroke="var(--ink)" strokeWidth="0.3" />
+            <line x1="400" y1="0" x2="400" y2="800" stroke="var(--ink)" strokeWidth="0.3" />
+            <line x1="0" y1="400" x2="800" y2="400" stroke="var(--ink)" strokeWidth="0.3" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 text-center max-w-3xl">
+          {/* Shield icon */}
+          <div
+            className="mx-auto mb-8"
+            style={{
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 0.2s",
+            }}
+          >
+            <svg viewBox="0 0 64 64" className="w-16 h-16 mx-auto" fill="none" stroke="var(--ink)" strokeWidth="0.6">
+              <path d="M32 6 L52 16 L52 32 C52 44 42 52 32 56 C22 52 12 44 12 32 L12 16 Z" />
+              <rect x="24" y="28" width="16" height="12" rx="1" />
+              <path d="M26 28 L26 24 C26 20 28 18 32 18 C36 18 38 20 38 24 L38 28" />
+              <circle cx="32" cy="34" r="2" fill="var(--ink)" stroke="none" />
+            </svg>
+          </div>
+
+          {/* Breadcrumb */}
+          <div
+            className="overflow-hidden mb-6"
+            style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.8s ease 0.3s" }}
+          >
+            <p
+              className="text-xs uppercase tracking-widest"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em" }}
+            >
+              <a
+                href="#"
+                onClick={(e) => { e.preventDefault(); onBack(); }}
+                className="transition-colors duration-300"
+                style={{ color: "var(--ink-faint)", textDecoration: "none" }}
+                onMouseEnter={(e) => (e.target.style.color = "var(--ink)")}
+                onMouseLeave={(e) => (e.target.style.color = "var(--ink-faint)")}
+              >
+                Paper Hallway
+              </a>
+              {" "}/ Security
+            </p>
+          </div>
+
+          {/* Title */}
+          <div className="overflow-hidden">
+            <h1
+              className="text-5xl sm:text-7xl md:text-8xl leading-none"
+              style={{
+                fontFamily: "var(--font-heading)",
+                color: "var(--ink)",
+                fontWeight: 400,
+                fontStyle: "italic",
+                opacity: loaded ? 1 : 0,
+                transform: loaded ? "translateY(0)" : "translateY(40px)",
+                transition: "all 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s",
+              }}
+            >
+              Trust &amp; Security
+            </h1>
+          </div>
+
+          {/* Tagline divider */}
+          <div
+            className="mx-auto mt-8 mb-6"
+            style={{
+              width: loaded ? "80px" : "0px",
+              height: "1px",
+              background: "var(--ink)",
+              opacity: 0.2,
+              transition: "width 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.8s",
+            }}
+          />
+
+          {/* Sub-headline */}
+          <p
+            className="text-sm sm:text-base mt-3 leading-relaxed max-w-lg mx-auto"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--ink-light)",
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1s ease 1.1s",
+            }}
+          >
+            Enterprise-grade privacy for the modern executive. We build tools that give you maximum leverage with zero data compromise.
+          </p>
+        </div>
+      </section>
+
+      {/* Content Sections */}
+      <section className="px-6 sm:px-10 py-24 sm:py-36">
+        <div className="max-w-3xl mx-auto">
+
+          {/* Section 1: Aether */}
+          <div className="mb-20">
+            <div className="flex items-center gap-6 mb-8">
+              <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
+              <span
+                className="text-xs uppercase tracking-widest"
+                style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+              >
+                Local AI
+              </span>
+            </div>
+
+            <h2
+              className="text-3xl sm:text-4xl mb-6"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.2 }}
+            >
+              Aether: Absolute Local Isolation
+            </h2>
+
+            <p
+              className="text-sm sm:text-base leading-relaxed mb-8"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+            >
+              Aether operates on a zero-trust, local-execution model. The AI engine (Ollama) and the vector database run entirely on your physical machine.
+            </p>
+
+            <div className="space-y-4">
+              {[
+                { label: "No Telemetry", desc: "We do not track your usage." },
+                { label: "No Cloud Transit", desc: "Your files never leave your hard drive." },
+                { label: "Air-Gapped Capable", desc: "Aether functions completely offline." },
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-4 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
+                  <span
+                    className="text-sm font-medium flex-shrink-0"
+                    style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontStyle: "italic", minWidth: "160px" }}
+                  >
+                    {item.label}
+                  </span>
+                  <span
+                    className="text-sm leading-relaxed"
+                    style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+                  >
+                    {item.desc}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 2: Synthese */}
+          <div className="mb-20">
+            <div className="flex items-center gap-6 mb-8">
+              <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
+              <span
+                className="text-xs uppercase tracking-widest"
+                style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+              >
+                Cloud Service
+              </span>
+            </div>
+
+            <h2
+              className="text-3xl sm:text-4xl mb-6"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.2 }}
+            >
+              Synthese: API Privacy &amp; Ephemeral Data
+            </h2>
+
+            <p
+              className="text-sm sm:text-base leading-relaxed mb-8"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+            >
+              Synthese is built on strict data pipelines designed to protect your corporate strategy and personal brand.
+            </p>
+
+            <div className="space-y-4 mb-10">
+              {[
+                { label: "Zero Training Data", desc: "The audio and video files you upload are processed via secure enterprise APIs that strictly prohibit the use of your data for training public LLMs." },
+                { label: "Secure Infrastructure", desc: "Authentication and data storage are handled by industry-leading providers with SOC2 compliance." },
+                { label: "Financial Security", desc: "We do not store or process your credit card data. All billing is handled directly through Stripe's encrypted payment gateways." },
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 py-3" style={{ borderBottom: "1px solid var(--border)" }}>
+                  <span
+                    className="text-sm font-medium flex-shrink-0"
+                    style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontStyle: "italic", minWidth: "160px" }}
+                  >
+                    {item.label}
+                  </span>
+                  <span
+                    className="text-sm leading-relaxed"
+                    style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+                  >
+                    {item.desc}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Swiss nFADP Compliance */}
+            <div
+              className="p-6 sm:p-8"
+              style={{ border: "1px solid var(--border)", background: "var(--paper-warm)" }}
+            >
+              <h3
+                className="text-lg mb-3"
+                style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic" }}
+              >
+                Swiss nFADP Compliance
+              </h3>
+              <p
+                className="text-sm leading-relaxed"
+                style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+              >
+                Paper Hallway operates in strict accordance with the revised Swiss Federal Act on Data Protection (nFADP). Any necessary cross-border data processing (such as secure payment routing) is conducted exclusively through enterprise partners bound by standard contractual clauses and recognized data privacy frameworks.
+              </p>
+            </div>
+          </div>
+
+          {/* Impressum */}
+          <div className="mt-20 pt-12" style={{ borderTop: "1px solid var(--border)" }}>
+            <div className="flex items-center gap-6 mb-8">
+              <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
+              <span
+                className="text-xs uppercase tracking-widest"
+                style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+              >
+                Legal
+              </span>
+            </div>
+
+            <h2
+              className="text-2xl sm:text-3xl mb-6"
+              style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400, fontStyle: "italic", lineHeight: 1.2 }}
+            >
+              Impressum (Legal Notice)
+            </h2>
+
+            <div
+              className="text-sm leading-relaxed"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", fontSize: "13px" }}
+            >
+              <p>Paper Hallway</p>
+              <p>Hasson Rogers</p>
+              <p>Zurich, Switzerland</p>
+              <p className="mt-2">
+                Contact:{" "}
+                <a
+                  href="mailto:hello@paperhallway.com"
+                  style={{ color: "var(--ink-light)", textDecoration: "none", borderBottom: "1px solid var(--border)" }}
+                  onMouseEnter={(e) => { e.target.style.borderColor = "var(--ink)"; e.target.style.color = "var(--ink)"; }}
+                  onMouseLeave={(e) => { e.target.style.borderColor = "var(--border)"; e.target.style.color = "var(--ink-light)"; }}
+                >
+                  hello@paperhallway.com
+                </a>
+              </p>
+            </div>
+          </div>
+
+          {/* Back to hallway */}
+          <div className="mt-16 pt-8" style={{ borderTop: "1px solid var(--border)" }}>
+            <a
+              href="#"
+              onClick={(e) => { e.preventDefault(); onBack(); }}
+              className="inline-flex items-center gap-3 text-xs uppercase tracking-widest transition-colors duration-300"
+              style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)", textDecoration: "none", letterSpacing: "0.2em" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-light)")}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M10 6 L2 6 M5 3 L2 6 L5 9" stroke="currentColor" strokeWidth="0.8" />
+              </svg>
+              Back to the Hallway
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* ====================================================================
    MAIN APP
    ==================================================================== */
 export default function PaperHallway() {
@@ -1936,6 +2235,7 @@ export default function PaperHallway() {
     if (path === "/about-synthese") return "synthese";
     if (path === "/about-aether" || path === "/aether") return "aether";
     if (path === "/sample") return "sample";
+    if (path === "/security") return "security";
     return "hallway";
   };
 
@@ -2029,6 +2329,8 @@ export default function PaperHallway() {
       window.history.pushState({}, "", "/about-aether");
     } else if (view === "sample") {
       window.history.pushState({}, "", "/sample");
+    } else if (view === "security") {
+      window.history.pushState({}, "", "/security");
     } else {
       window.history.pushState({}, "", "/");
     }
@@ -2149,6 +2451,33 @@ export default function PaperHallway() {
         {currentView === "sample" && (
           <SamplePage onBack={() => handleNavigate("synthese")} />
         )}
+
+        {currentView === "security" && (
+          <SecurityPage onBack={() => handleNavigate("hallway")} />
+        )}
+
+        {/* Site-wide footer with Trust & Security link */}
+        <div
+          className="px-6 sm:px-10 py-6 text-center"
+          style={{ borderTop: "1px solid var(--border)" }}
+        >
+          <a
+            href="/security"
+            onClick={(e) => { e.preventDefault(); handleNavigate("security"); }}
+            className="text-xs transition-colors duration-300"
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--ink-faint)",
+              textDecoration: "none",
+              letterSpacing: "0.1em",
+              fontSize: "11px",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink-light)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-faint)")}
+          >
+            Trust &amp; Security
+          </a>
+        </div>
       </div>
     </>
   );
