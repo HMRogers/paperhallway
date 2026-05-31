@@ -2370,6 +2370,25 @@ export default function PaperHallway() {
           <>
             <Hero />
             <Divider />
+            {/* Brand Video */}
+            <section className="flex justify-center px-6 py-12 sm:py-20">
+              <div style={{ maxWidth: "800px", width: "100%" }}>
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  style={{
+                    width: "100%",
+                    borderRadius: "2px",
+                    boxShadow: "0 8px 40px rgba(60, 55, 48, 0.08)",
+                  }}
+                >
+                  <source src="/brand-video.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </section>
+            <Divider />
             <CollectionSection onNavigate={handleNavigate} />
             <Divider />
             <Footer />
