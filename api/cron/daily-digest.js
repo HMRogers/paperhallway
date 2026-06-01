@@ -85,14 +85,24 @@ export default async function handler(req, res) {
       ? new Date(draft.scheduled_for).toLocaleString('en-US', { timeZone: 'UTC' })
       : 'Not scheduled';
 
+    // Extract image URL if present
+    let displayText = draft.content_text;
+    let attachedImage = null;
+    const imgMatch = displayText.match(/\[IMG:(https?:\/\/[^\]]+)\]$/);
+    if (imgMatch) {
+      attachedImage = imgMatch[1];
+      displayText = displayText.replace(/\[IMG:https?:\/\/[^\]]+\]$/, '').trim();
+    }
+
     const messageText = [
       `📝 *New Draft Awaiting Approval*`,
       ``,
       `*Platform:* ${platformLabel}`,
       `*Scheduled:* ${scheduledLabel}`,
+      attachedImage ? `*Image:* Attached ✓` : `*Image:* None`,
       ``,
       `---`,
-      `${draft.content_text}`,
+      `${displayText}`,
       `---`,
       ``,
       `Tap a button below to approve or reject.`
@@ -132,9 +142,29 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Telegram send failed', details: telegramResult });
     }
 
+    // If there's an attached image, send it as a photo preview in Telegram
+    if (attachedImage) {
+      try {
+        await fetch(
+          `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendPhoto`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: process.env.TELEGRAM_CHAT_ID,
+              photo: attachedImage,
+              caption: '📎 Image attached to this post'
+            })
+          }
+        );
+      } catch (photoErr) {
+        console.error('Telegram photo send failed (non-critical):', photoErr);
+      }
+    }
+
     // Generate branded image and send as photo to Telegram for Instagram use
     try {
-      const svg = generateBrandedSVG(draft.content_text);
+      const svg = generateBrandedSVG(displayText);
       const svgBuffer = Buffer.from(svg);
 
       // Upload SVG to Supabase Storage for public URL

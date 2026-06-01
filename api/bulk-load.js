@@ -25,11 +25,18 @@ export default async function handler(req, res) {
     }
 
     // Prepare data for insertion
-    const insertData = posts.map(post => ({
-      content_text: post.content_text,
-      platform: post.platform || 'x',
-      status: 'pending'
-    }));
+    // If image_url is provided, append it as [IMG:url] marker to content_text
+    const insertData = posts.map(post => {
+      let text = post.content_text;
+      if (post.image_url) {
+        text = `${text}[IMG:${post.image_url}]`;
+      }
+      return {
+        content_text: text,
+        platform: post.platform || 'x',
+        status: 'pending'
+      };
+    });
 
     // Insert into content_queue table
     const { data, error } = await supabase

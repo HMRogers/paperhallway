@@ -65,9 +65,69 @@ function buildOAuthHeader(method, url, consumerKey, consumerSecret, accessToken,
   return `OAuth ${headerString}`;
 }
 
+// ─── Upload media to X (Twitter) via v1.1 media upload ─────────────────────────
+
+async function uploadMediaToX(imageUrl) {
+  // Download the image
+  const imgResponse = await fetch(imageUrl);
+  if (!imgResponse.ok) throw new Error(`Failed to download image: ${imgResponse.status}`);
+  const imgBuffer = Buffer.from(await imgResponse.arrayBuffer());
+  const base64Image = imgBuffer.toString('base64');
+
+  // Upload to X media endpoint (v1.1)
+  const uploadUrl = 'https://upload.twitter.com/1.1/media/upload.json';
+  const method = 'POST';
+
+  // Build form data
+  const boundary = '----FormBoundary' + crypto.randomBytes(8).toString('hex');
+  const formBody = [
+    `--${boundary}`,
+    'Content-Disposition: form-data; name="media_data"',
+    '',
+    base64Image,
+    `--${boundary}--`
+  ].join('\r\n');
+
+  const authHeader = buildOAuthHeader(
+    method,
+    uploadUrl,
+    process.env.X_CONSUMER_KEY,
+    process.env.X_CONSUMER_SECRET,
+    process.env.X_ACCESS_TOKEN,
+    process.env.X_ACCESS_TOKEN_SECRET
+  );
+
+  const response = await fetch(uploadUrl, {
+    method,
+    headers: {
+      Authorization: authHeader,
+      'Content-Type': `multipart/form-data; boundary=${boundary}`
+    },
+    body: formBody
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`X Media Upload error (${response.status}): ${JSON.stringify(result)}`);
+  }
+
+  return result.media_id_string;
+}
+
 // ─── Post to X (Twitter) via API v2 ────────────────────────────────────────────
 
-async function postToX(text) {
+async function postToX(text, imageUrl) {
+  // If there's an image, upload it first
+  let mediaId = null;
+  if (imageUrl) {
+    try {
+      mediaId = await uploadMediaToX(imageUrl);
+    } catch (err) {
+      console.error('Media upload failed, posting text-only:', err.message);
+    }
+  }
+
   const url = 'https://api.x.com/2/tweets';
   const method = 'POST';
 
@@ -80,13 +140,18 @@ async function postToX(text) {
     process.env.X_ACCESS_TOKEN_SECRET
   );
 
+  const body = { text };
+  if (mediaId) {
+    body.media = { media_ids: [mediaId] };
+  }
+
   const response = await fetch(url, {
     method,
     headers: {
       Authorization: authHeader,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ text })
+    body: JSON.stringify(body)
   });
 
   const result = await response.json();
@@ -350,10 +415,19 @@ export default async function handler(req, res) {
             ? ['x', 'instagram']
             : [item.platform];
 
+      // Extract image URL if present (format: [IMG:url] at end of content_text)
+      let postText = item.content_text;
+      let imageUrl = null;
+      const imgMatch = postText.match(/\[IMG:(https?:\/\/[^\]]+)\]$/);
+      if (imgMatch) {
+        imageUrl = imgMatch[1];
+        postText = postText.replace(/\[IMG:https?:\/\/[^\]]+\]$/, '').trim();
+      }
+
       // Post to X
       if (platforms.includes('x')) {
         try {
-          results.x = await postToX(item.content_text);
+          results.x = await postToX(postText, imageUrl);
         } catch (err) {
           errors.push(`X: ${err.message}`);
         }
@@ -362,7 +436,7 @@ export default async function handler(req, res) {
       // Post to LinkedIn
       if (platforms.includes('linkedin')) {
         try {
-          results.linkedin = await postToLinkedIn(item.content_text);
+          results.linkedin = await postToLinkedIn(postText);
         } catch (err) {
           errors.push(`LinkedIn: ${err.message}`);
         }
@@ -371,11 +445,11 @@ export default async function handler(req, res) {
       // Instagram: generate branded image and send via Telegram for manual posting
       if (platforms.includes('instagram')) {
         try {
-          const imageUrl = await generateBrandedImage(item.content_text);
-          results.instagram = { manual: true, imageUrl };
+          const igImageUrl = await generateBrandedImage(postText);
+          results.instagram = { manual: true, imageUrl: igImageUrl };
           // Send image link to Telegram for manual Instagram posting
           await sendTelegramConfirmation(
-            `🖼️ *Instagram Image Ready*\n\nBranded image: ${imageUrl}\n\n_Caption:_ ${item.content_text.substring(0, 200)}${item.content_text.length > 200 ? '...' : ''}\n\n_Save and post to Instagram manually._`
+            `🖼️ *Instagram Image Ready*\n\nBranded image: ${igImageUrl}\n\n_Caption:_ ${postText.substring(0, 200)}${postText.length > 200 ? '...' : ''}\n\n_Save and post to Instagram manually._`
           );
         } catch (err) {
           errors.push(`Instagram image: ${err.message}`);
