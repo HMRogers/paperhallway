@@ -100,7 +100,7 @@ function Nav() {
       style={{
         backdropFilter: scrolled ? "blur(16px)" : "none",
         background: scrolled ? "rgba(252,250,245,0.88)" : "transparent",
-        borderBottom: scrolled ? "1px solid rgba(60,55,48,0.08)" : "1px solid transparent",
+        borderBottom: scrolled ? "1px solid rgba(42,38,33,0.12)" : "1px solid transparent",
       }}
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between h-16 sm:h-20">
@@ -338,8 +338,8 @@ function DoorCard({ door, index }) {
           background: "var(--paper)",
           transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
           boxShadow: hovered
-            ? "0 20px 60px rgba(60,55,48,0.08), 0 1px 3px rgba(60,55,48,0.04)"
-            : "0 1px 3px rgba(60,55,48,0.02)",
+            ? "0 20px 60px rgba(42,38,33,0.12), 0 1px 3px rgba(42,38,33,0.06)"
+            : "0 1px 3px rgba(42,38,33,0.03)",
           transform: hovered ? "translateY(-8px)" : "translateY(0)",
         }}
       >
@@ -705,10 +705,10 @@ export default function PaperHallway() {
           --font-body: 'Hanken Grotesk', 'Helvetica Neue', sans-serif;
           --paper: #FCFAF5;
           --paper-warm: #F8F5ED;
-          --ink: #3C3730;
-          --ink-light: #8A8279;
-          --ink-faint: #B8B0A6;
-          --border: rgba(60, 55, 48, 0.1);
+          --ink: #2A2621;
+          --ink-light: #605B54;
+          --ink-faint: #807B74;
+          --border: rgba(42, 38, 33, 0.16);
         }
 
         *, *::before, *::after {
@@ -728,7 +728,7 @@ export default function PaperHallway() {
         }
 
         ::selection {
-          background: rgba(60, 55, 48, 0.12);
+          background: rgba(42, 38, 33, 0.18);
         }
 
         input::placeholder {

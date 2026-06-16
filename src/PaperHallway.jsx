@@ -49,7 +49,7 @@ function Nav({ onNavigate, currentView }) {
       style={{
         backdropFilter: scrolled ? "blur(16px)" : "none",
         background: scrolled ? "rgba(252,250,245,0.88)" : "transparent",
-        borderBottom: scrolled ? "1px solid rgba(60,55,48,0.08)" : "1px solid transparent",
+        borderBottom: scrolled ? "1px solid rgba(42,38,33,0.12)" : "1px solid transparent",
       }}
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-10 flex items-center justify-between h-16 sm:h-20">
@@ -366,8 +366,8 @@ function AetherShowcase({ onNavigate }) {
           border: "1px solid var(--border)",
           background: "var(--paper)",
           boxShadow: hovered
-            ? "0 20px 60px rgba(60,55,48,0.08), 0 1px 3px rgba(60,55,48,0.04)"
-            : "0 1px 3px rgba(60,55,48,0.02)",
+            ? "0 20px 60px rgba(42,38,33,0.12), 0 1px 3px rgba(42,38,33,0.06)"
+            : "0 1px 3px rgba(42,38,33,0.03)",
           transform: hovered ? "translateY(-4px)" : "translateY(0)",
         }}
         onMouseEnter={() => setHovered(true)}
@@ -467,7 +467,7 @@ function AetherShowcase({ onNavigate }) {
                   cursor: "pointer",
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(42, 38, 33, 0.16)"; e.currentTarget.style.background = "transparent"; }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ink)">
                   <path d="M0 3.5L10.1 4.9V14.7H0V3.5ZM11.1 4.7L24 2.9V14.7H11.1V4.7ZM0 15.8H10.1V25.6L0 24.2V15.8ZM11.1 15.8H24V26.8L11.1 25.3V15.8Z" />
@@ -565,8 +565,8 @@ function SyntheseShowcase({ onNavigate }) {
           border: "1px solid var(--border)",
           background: "var(--paper)",
           boxShadow: hovered
-            ? "0 20px 60px rgba(60,55,48,0.08), 0 1px 3px rgba(60,55,48,0.04)"
-            : "0 1px 3px rgba(60,55,48,0.02)",
+            ? "0 20px 60px rgba(42,38,33,0.12), 0 1px 3px rgba(42,38,33,0.06)"
+            : "0 1px 3px rgba(42,38,33,0.03)",
           transform: hovered ? "translateY(-4px)" : "translateY(0)",
         }}
         onMouseEnter={() => setHovered(true)}
@@ -1207,7 +1207,7 @@ function AetherPage({ onBack }) {
                   cursor: "pointer",
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(42, 38, 33, 0.16)"; e.currentTarget.style.background = "transparent"; }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ink)">
                   <path d="M0 3.5L10.1 4.9V14.7H0V3.5ZM11.1 4.7L24 2.9V14.7H11.1V4.7ZM0 15.8H10.1V25.6L0 24.2V15.8ZM11.1 15.8H24V26.8L11.1 25.3V15.8Z" />
@@ -1367,7 +1367,7 @@ function AetherPage({ onBack }) {
                 cursor: "pointer",
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--ink)"; e.currentTarget.style.background = "var(--paper-warm)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(60, 55, 48, 0.1)"; e.currentTarget.style.background = "transparent"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(42, 38, 33, 0.16)"; e.currentTarget.style.background = "transparent"; }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="1.5">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -1536,7 +1536,7 @@ function SyntheseFeatureCard({ feature, index }) {
           border: "1px solid var(--border)",
           background: hovered ? "var(--paper-warm)" : "var(--paper)",
           transform: hovered ? "translateY(-4px)" : "translateY(0)",
-          boxShadow: hovered ? "0 12px 40px rgba(60,55,48,0.06)" : "none",
+          boxShadow: hovered ? "0 12px 40px rgba(42,38,33,0.09)" : "none",
         }}
       >
         <div className="mb-6" style={{ color: "var(--ink-light)" }}>
@@ -1840,7 +1840,7 @@ function AetherFeatureCard({ feature, index }) {
           border: "1px solid var(--border)",
           background: hovered ? "var(--paper-warm)" : "var(--paper)",
           transform: hovered ? "translateY(-4px)" : "translateY(0)",
-          boxShadow: hovered ? "0 12px 40px rgba(60,55,48,0.06)" : "none",
+          boxShadow: hovered ? "0 12px 40px rgba(42,38,33,0.09)" : "none",
         }}
       >
         <div className="mb-6" style={{ color: "var(--ink-light)" }}>
@@ -2304,10 +2304,10 @@ export default function PaperHallway() {
           --font-body: 'Hanken Grotesk', 'Helvetica Neue', sans-serif;
           --paper: #FCFAF5;
           --paper-warm: #F8F5ED;
-          --ink: #3C3730;
-          --ink-light: #8A8279;
-          --ink-faint: #B8B0A6;
-          --border: rgba(60, 55, 48, 0.1);
+          --ink: #2A2621;
+          --ink-light: #605B54;
+          --ink-faint: #807B74;
+          --border: rgba(42, 38, 33, 0.16);
         }
 
         *, *::before, *::after {
