@@ -747,6 +747,85 @@ function CollectionSection({ onNavigate }) {
   );
 }
 
+/* — Journal Section — */
+function JournalSection() {
+  const [ref, visible] = useInView(0.1);
+  const [hovered, setHovered] = useState(false);
+  return (
+    <section
+      ref={ref}
+      className="relative px-6 sm:px-10 py-20 sm:py-28"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(40px)",
+        transition: "all 0.9s cubic-bezier(0.22, 1, 0.36, 1)",
+      }}
+    >
+      <div className="max-w-5xl mx-auto flex flex-col items-center text-center gap-8">
+        {/* Label */}
+        <div className="flex items-center gap-6">
+          <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
+          <span
+            className="text-xs uppercase tracking-widest"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+          >
+            The Hallway Journal
+          </span>
+          <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
+        </div>
+        {/* Heading */}
+        <h2
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontSize: "clamp(2rem, 5vw, 3.5rem)",
+            fontWeight: 400,
+            color: "var(--ink)",
+            lineHeight: 1.1,
+          }}
+        >
+          Dispatches from the studio.
+        </h2>
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            color: "var(--ink-light)",
+            fontSize: "0.95rem",
+            maxWidth: "480px",
+            lineHeight: 1.75,
+          }}
+        >
+          Long-form writing on local AI, privacy-first tools, and building in public. No noise — just the work.
+        </p>
+        {/* CTA Button */}
+        <a
+          href="https://blog.paperhallway.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-4 px-8 py-4 transition-all duration-500"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "11px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            background: hovered ? "var(--ink)" : "transparent",
+            color: hovered ? "var(--paper)" : "var(--ink)",
+            border: "1px solid var(--ink)",
+            textDecoration: "none",
+            transition: "all 0.4s ease",
+          }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          Read the Journal
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M1 6 L10 6 M7 3 L10 6 L7 9" stroke="currentColor" strokeWidth="0.9" fill="none" />
+          </svg>
+        </a>
+      </div>
+    </section>
+  );
+}
+
 /* — Footer — */
 function Footer() {
   const [email, setEmail] = useState("");
@@ -2390,6 +2469,8 @@ export default function PaperHallway() {
             </section>
             <Divider />
             <CollectionSection onNavigate={handleNavigate} />
+            <Divider />
+            <JournalSection />
             <Divider />
             <Footer />
           </>
