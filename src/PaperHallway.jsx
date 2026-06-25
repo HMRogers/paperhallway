@@ -97,6 +97,26 @@ function Nav({ onNavigate, currentView }) {
                   }}
                 />
               </a>
+              <a
+                href="#journal"
+                className="relative text-xs uppercase tracking-widest transition-colors duration-300 group"
+                style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("journal")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Journal
+                <span
+                  className="absolute -bottom-1 left-0 h-px bg-current transition-all duration-500 origin-left"
+                  style={{ width: 0 }}
+                  ref={(el) => {
+                    if (!el) return;
+                    el.parentElement.onmouseenter = () => (el.style.width = "100%");
+                    el.parentElement.onmouseleave = () => (el.style.width = "0");
+                  }}
+                />
+              </a>
 
             </>
           ) : (
@@ -753,6 +773,7 @@ function JournalSection() {
   const [hovered, setHovered] = useState(false);
   return (
     <section
+      id="journal"
       ref={ref}
       className="relative px-6 sm:px-10 py-20 sm:py-28"
       style={{
