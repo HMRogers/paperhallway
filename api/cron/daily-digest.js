@@ -5,6 +5,84 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+// ─── Hashtag Generation (keyword/category matching) ────────────────────────────
+
+/**
+ * Analyzes post text and returns 3–5 relevant hashtags based on keyword matching.
+ * Categories: AI, Privacy, SaaS, Founder Life, Automation, Data Sovereignty,
+ * Content Creation, B2B, Indie Hacker, No-Code, Local AI, Tech Startup.
+ */
+function generateHashtags(text) {
+  const lower = text.toLowerCase();
+
+  // Each entry: { keywords: [...], hashtag: '#Tag', priority: 1-3 }
+  // priority 1 = strongest signal, 3 = weakest
+  const rules = [
+    // ── AI & Machine Learning ──────────────────────────────────────────────────
+    { keywords: ['artificial intelligence', 'machine learning', 'deep learning', 'neural', 'llm', 'large language model', 'gpt', 'claude', 'gemini', 'openai', 'anthropic'], hashtag: '#AI', priority: 1 },
+    { keywords: [' ai ', ' ai,', ' ai.', ' ai!', ' ai?', ' ai\n', 'ai-powered', 'ai-driven', 'ai tool', 'ai agent', 'ai model', 'ai system', 'ai solution', 'ai platform', 'ai product', 'ai feature', 'ai workflow', 'ai-first', 'ai-native'], hashtag: '#AI', priority: 1 },
+    { keywords: ['aitools', 'ai tools', 'ai assistant', 'ai automation', 'ai writing', 'ai content', 'ai generated', 'ai generation'], hashtag: '#AITools', priority: 2 },
+    { keywords: ['local ai', 'local model', 'on-device', 'on device', 'offline ai', 'edge ai', 'private ai', 'run locally', 'runs locally', 'local llm', 'ollama', 'lm studio'], hashtag: '#LocalAI', priority: 1 },
+
+    // ── Privacy & Data Sovereignty ─────────────────────────────────────────────
+    { keywords: ['privacy', 'private', 'data privacy', 'privacy-first', 'privacy first'], hashtag: '#Privacy', priority: 1 },
+    { keywords: ['data privacy', 'gdpr', 'ccpa', 'data protection', 'personal data', 'user data'], hashtag: '#DataPrivacy', priority: 1 },
+    { keywords: ['data sovereignty', 'data ownership', 'own your data', 'data control', 'data rights', 'digital sovereignty', 'no tracking', 'zero tracking', 'no telemetry'], hashtag: '#DataSovereignty', priority: 1 },
+    { keywords: ['security', 'secure', 'encrypted', 'encryption', 'end-to-end', 'zero knowledge', 'zero-knowledge'], hashtag: '#CyberSecurity', priority: 2 },
+
+    // ── SaaS & B2B ────────────────────────────────────────────────────────────
+    { keywords: ['saas', 'software as a service', 'subscription', 'recurring revenue', 'mrr', 'arr', 'churn', 'ltv', 'customer lifetime value'], hashtag: '#SaaS', priority: 1 },
+    { keywords: ['b2b', 'business to business', 'enterprise', 'b2b saas', 'b2b software', 'b2b product', 'b2b tool', 'b2b platform', 'corporate client', 'business client'], hashtag: '#B2B', priority: 1 },
+    { keywords: ['executive', 'ceo', 'cto', 'cmo', 'c-suite', 'leadership', 'management', 'decision maker', 'stakeholder'], hashtag: '#ExecutiveContent', priority: 2 },
+
+    // ── Founder & Startup Life ────────────────────────────────────────────────
+    { keywords: ['founder', 'co-founder', 'cofounder', 'building in public', 'build in public', 'buildinpublic', 'shipped', 'launched', 'side project', 'bootstrapped', 'bootstrapping'], hashtag: '#BuildInPublic', priority: 1 },
+    { keywords: ['founder life', 'founder journey', 'startup life', 'startup journey', 'being a founder', 'as a founder', 'solo founder', 'indie founder'], hashtag: '#FounderLife', priority: 1 },
+    { keywords: ['startup', 'start-up', 'early stage', 'seed stage', 'pre-seed', 'mvp', 'minimum viable product', 'product-market fit', 'pmf', 'go to market', 'gtm'], hashtag: '#TechStartup', priority: 1 },
+    { keywords: ['indie hacker', 'indiehacker', 'indie maker', 'indie dev', 'solopreneur', 'solo developer', 'bootstrapped startup'], hashtag: '#IndieHacker', priority: 1 },
+
+    // ── Automation & Productivity ─────────────────────────────────────────────
+    { keywords: ['automat', 'workflow', 'no-code', 'nocode', 'low-code', 'lowcode', 'zapier', 'make.com', 'n8n', 'trigger', 'pipeline', 'scheduled', 'cron'], hashtag: '#Automation', priority: 1 },
+    { keywords: ['no-code', 'nocode', 'no code', 'without code', 'drag and drop', 'visual builder', 'zero code'], hashtag: '#NoCode', priority: 1 },
+    { keywords: ['productivity', 'productive', 'efficiency', 'time saving', 'saves time', 'streamline', 'optimize', 'workflow optimization'], hashtag: '#Productivity', priority: 2 },
+
+    // ── Content Creation & Marketing ──────────────────────────────────────────
+    { keywords: ['content creation', 'content creator', 'content strategy', 'content marketing', 'content engine', 'content calendar', 'content pipeline', 'creating content', 'produce content'], hashtag: '#ContentCreation', priority: 1 },
+    { keywords: ['copywriting', 'copy', 'writing', 'ghostwriting', 'ghostwriter', 'thought leadership', 'linkedin post', 'twitter post', 'social post', 'social media'], hashtag: '#ContentCreation', priority: 2 },
+    { keywords: ['marketing', 'growth', 'growth hacking', 'demand generation', 'lead generation', 'inbound', 'outbound', 'seo', 'brand'], hashtag: '#Marketing', priority: 2 },
+
+    // ── Tech & Development ────────────────────────────────────────────────────
+    { keywords: ['developer', 'development', 'programming', 'coding', 'code', 'software', 'engineer', 'engineering', 'tech stack', 'api', 'open source', 'github', 'deploy', 'deployment'], hashtag: '#TechStartup', priority: 2 },
+    { keywords: ['product', 'product update', 'new feature', 'feature release', 'product launch', 'launch', 'release', 'update', 'version', 'v1', 'v2'], hashtag: '#ProductLaunch', priority: 2 },
+  ];
+
+  // Score each hashtag candidate
+  const scores = {};
+  for (const rule of rules) {
+    for (const keyword of rule.keywords) {
+      if (lower.includes(keyword)) {
+        const tag = rule.hashtag;
+        const score = (4 - rule.priority); // priority 1 → 3pts, priority 2 → 2pts, priority 3 → 1pt
+        scores[tag] = (scores[tag] || 0) + score;
+        break; // only count each rule once even if multiple keywords match
+      }
+    }
+  }
+
+  // Sort by score descending, then alphabetically for tie-breaking
+  const ranked = Object.entries(scores)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([tag]) => tag);
+
+  // Always ensure at least 3 hashtags; fall back to general defaults if needed
+  const defaults = ['#AI', '#TechStartup', '#BuildInPublic', '#SaaS', '#IndieHacker'];
+  const combined = [...new Set([...ranked, ...defaults])];
+
+  // Return 3–5 hashtags
+  const count = Math.min(5, Math.max(3, ranked.length));
+  return combined.slice(0, count);
+}
+
 // Generate a branded 1080x1080 Instagram-ready image as SVG
 function generateBrandedSVG(text) {
   const displayText = text.length > 280 ? text.substring(0, 277) + '...' : text;
@@ -94,6 +172,27 @@ export default async function handler(req, res) {
       displayText = displayText.replace(/\[IMG:https?:\/\/[^\]]+\]$/, '').trim();
     }
 
+    // ── Generate hashtags and append to display text ───────────────────────────
+    const hashtags = generateHashtags(displayText);
+    const hashtagLine = hashtags.join(' ');
+    const displayTextWithHashtags = `${displayText}\n\n${hashtagLine}`;
+
+    // Update content_text in Supabase so approve.js picks up the hashtags
+    const updatedContentText = attachedImage
+      ? `${displayTextWithHashtags} [IMG:${attachedImage}]`
+      : displayTextWithHashtags;
+
+    const { error: updateError } = await supabase
+      .from('content_queue')
+      .update({ content_text: updatedContentText })
+      .eq('id', draft.id);
+
+    if (updateError) {
+      // Non-fatal: log and continue — hashtags will still show in Telegram preview
+      console.error('Failed to persist hashtags to content_queue (non-critical):', updateError);
+    }
+    // ──────────────────────────────────────────────────────────────────────────
+
     const messageText = [
       `📝 *New Draft Awaiting Approval*`,
       ``,
@@ -102,7 +201,7 @@ export default async function handler(req, res) {
       attachedImage ? `*Image:* Attached ✓` : `*Image:* None`,
       ``,
       `---`,
-      `${displayText}`,
+      `${displayTextWithHashtags}`,
       `---`,
       ``,
       `Tap a button below to approve or reject.`
@@ -203,7 +302,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       message: 'Digest sent to Telegram with image',
       draft_id: draft.id,
-      platform: draft.platform
+      platform: draft.platform,
+      hashtags_added: hashtags
     });
   } catch (err) {
     console.error('Cron handler error:', err);
