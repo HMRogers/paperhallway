@@ -2583,6 +2583,7 @@ export default function PaperHallway() {
           max-width: 72vw;
           height: auto;
           display: block;
+          margin: 0 auto;
           /* Soft radial mask dissolves the cream video edges into the page */
           -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 55%, transparent 100%);
           mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 55%, transparent 100%);
