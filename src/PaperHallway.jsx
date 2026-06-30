@@ -198,6 +198,30 @@ function Hero() {
 
       {/* Main content */}
       <div className="relative z-10 text-center max-w-3xl">
+        {/* Brand logo animation — 5s seamless loop, blends into the paper background */}
+        <div
+          className="hero-logo-anim mx-auto mb-2 sm:mb-4"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 1.2s ease 0.15s, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s",
+          }}
+        >
+          <video
+            className="hero-logo-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            tabIndex={-1}
+            poster=""
+          >
+            <source src="/ph-logo-animation.mp4" type="video/mp4" />
+          </video>
+        </div>
+
         <div
           className="overflow-hidden mb-6"
           style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s ease 0.3s" }}
@@ -761,6 +785,104 @@ function CollectionSection({ onNavigate }) {
         <div className="flex flex-col gap-10 sm:gap-14">
           <AetherShowcase onNavigate={onNavigate} />
           <SyntheseShowcase onNavigate={onNavigate} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* — Studio Story Section — */
+function StudioStory() {
+  const [ref, visible] = useInView(0.12);
+  const videoRef = useRef(null);
+  const [hovered, setHovered] = useState(false);
+
+  // Defer loading the heavier 15s film until the section scrolls into view.
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || !visible) return;
+    if (el.dataset.loaded === "true") return;
+    el.dataset.loaded = "true";
+    // Attach source lazily, then begin playback once buffered.
+    const src = el.getAttribute("data-src");
+    if (src && !el.querySelector("source")) {
+      const s = document.createElement("source");
+      s.src = src;
+      s.type = "video/mp4";
+      el.appendChild(s);
+      el.load();
+    }
+    el.play().catch(() => {});
+  }, [visible]);
+
+  return (
+    <section
+      id="studio-story"
+      ref={ref}
+      className="relative px-6 sm:px-10 py-24 sm:py-36"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(40px)",
+        transition: "all 0.9s cubic-bezier(0.22, 1, 0.36, 1)",
+      }}
+    >
+      <div className="max-w-5xl mx-auto">
+        {/* Section label */}
+        <div className="flex items-center gap-6 mb-12 sm:mb-16">
+          <div style={{ width: "40px", height: "1px", background: "var(--ink)", opacity: 0.2 }} />
+          <span
+            className="text-xs uppercase tracking-widest"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink-faint)", letterSpacing: "0.3em", fontSize: "10px" }}
+          >
+            Studio Story
+          </span>
+        </div>
+
+        {/* Heading */}
+        <h2
+          className="text-3xl sm:text-5xl md:text-6xl leading-tight mb-6 max-w-3xl"
+          style={{ fontFamily: "var(--font-heading)", color: "var(--ink)", fontWeight: 400 }}
+        >
+          Crafted in the quiet,{" "}
+          <span style={{ fontStyle: "italic" }}>built to last.</span>
+        </h2>
+        <p
+          className="text-base sm:text-lg max-w-xl leading-relaxed mb-12 sm:mb-16"
+          style={{ fontFamily: "var(--font-body)", color: "var(--ink-light)" }}
+        >
+          A boutique AI studio building privacy-first tools and autonomous services
+          — designed with intention, refined with patience.
+        </p>
+
+        {/* Brand film */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            border: "1px solid var(--border)",
+            background: "var(--paper-warm)",
+            boxShadow: hovered
+              ? "0 24px 70px rgba(42,38,33,0.14), 0 1px 3px rgba(42,38,33,0.06)"
+              : "0 8px 40px rgba(60, 55, 48, 0.08)",
+            transition: "box-shadow 0.6s ease",
+            borderRadius: "2px",
+          }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          <video
+            ref={videoRef}
+            data-src="/brand-video.mp4"
+            muted
+            loop
+            playsInline
+            preload="none"
+            aria-label="Paper Hallway brand film"
+            style={{
+              width: "100%",
+              display: "block",
+              borderRadius: "2px",
+            }}
+          />
         </div>
       </div>
     </section>
@@ -2455,6 +2577,31 @@ export default function PaperHallway() {
           animation: gentle-bounce 2.5s ease-in-out infinite;
         }
 
+        /* Hero brand logo animation — seamless blend into the paper background */
+        .hero-logo-video {
+          width: 340px;
+          max-width: 72vw;
+          height: auto;
+          display: block;
+          /* Soft radial mask dissolves the cream video edges into the page */
+          -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 55%, transparent 100%);
+          mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 55%, transparent 100%);
+          mix-blend-mode: multiply;
+          pointer-events: none;
+        }
+        @media (min-width: 640px) {
+          .hero-logo-video { width: 420px; }
+        }
+        @media (min-width: 768px) {
+          .hero-logo-video { width: 480px; }
+        }
+
+        /* Respect users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .hero-logo-anim { display: none; }
+          .animate-gentle-bounce { animation: none; }
+        }
+
         /* Smooth scroll anchoring offset for fixed nav */
         [id] {
           scroll-margin-top: 100px;
@@ -2470,26 +2617,9 @@ export default function PaperHallway() {
           <>
             <Hero />
             <Divider />
-            {/* Brand Video */}
-            <section className="flex justify-center px-6 py-12 sm:py-20">
-              <div style={{ maxWidth: "800px", width: "100%" }}>
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  style={{
-                    width: "100%",
-                    borderRadius: "2px",
-                    boxShadow: "0 8px 40px rgba(60, 55, 48, 0.08)",
-                  }}
-                >
-                  <source src="/brand-video.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </section>
-            <Divider />
             <CollectionSection onNavigate={handleNavigate} />
+            <Divider />
+            <StudioStory />
             <Divider />
             <JournalSection />
             <Divider />
