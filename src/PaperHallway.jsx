@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { supabase, isSupabaseConfigured } from "./lib/supabase";
 import AuthPage from "./components/AuthPage";
 import Dashboard from "./components/Dashboard";
-import BrandLogo from "./components/BrandLogo";
 
 /*
   PAPER HALLWAY — "The Digital Storefront"
@@ -60,7 +59,18 @@ function Nav({ onNavigate, currentView }) {
           className="flex items-center gap-3 group"
           onClick={(e) => { e.preventDefault(); onNavigate("hallway"); }}
         >
-          <BrandLogo variant="nav" />
+          <svg viewBox="0 0 28 36" className="w-5 h-7" fill="none" stroke="var(--ink)" strokeWidth="1">
+            <rect x="1" y="1" width="26" height="34" rx="1.5" />
+            <line x1="7" y1="8" x2="21" y2="8" strokeWidth="0.5" />
+            <line x1="7" y1="12" x2="21" y2="12" strokeWidth="0.5" />
+            <line x1="7" y1="16" x2="17" y2="16" strokeWidth="0.5" />
+          </svg>
+          <span
+            className="tracking-widest text-xs uppercase"
+            style={{ fontFamily: "var(--font-body)", color: "var(--ink)", letterSpacing: "0.25em" }}
+          >
+            Paper Hallway
+          </span>
         </a>
 
         {/* Links */}
@@ -197,7 +207,19 @@ function Hero() {
             transition: "opacity 1.2s ease 0.15s, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s",
           }}
         >
-          <BrandLogo variant="hero" />
+          <video
+            className="hero-logo-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            tabIndex={-1}
+            poster=""
+          >
+            <source src="/ph-logo-animation.mp4" type="video/mp4" />
+          </video>
         </div>
 
         <div
