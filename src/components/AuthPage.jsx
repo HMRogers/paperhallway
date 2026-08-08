@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
+import BrandLogo from "./BrandLogo";
 
 export default function AuthPage({ onAuthSuccess }) {
   const [mode, setMode] = useState("login"); // login | signup
@@ -71,12 +72,7 @@ export default function AuthPage({ onAuthSuccess }) {
         <div className="relative z-10 w-full max-w-sm">
           {/* Logo / brand mark */}
           <div className="text-center mb-12">
-            <svg viewBox="0 0 28 36" className="w-6 h-8 mx-auto mb-4" fill="none" stroke="var(--ink)" strokeWidth="1">
-              <rect x="1" y="1" width="26" height="34" rx="1.5" />
-              <line x1="7" y1="8" x2="21" y2="8" strokeWidth="0.5" />
-              <line x1="7" y1="12" x2="21" y2="12" strokeWidth="0.5" />
-              <line x1="7" y1="16" x2="17" y2="16" strokeWidth="0.5" />
-            </svg>
+            <BrandLogo variant="auth" className="mb-4" />
             <h1
               className="text-3xl sm:text-4xl"
               style={{
